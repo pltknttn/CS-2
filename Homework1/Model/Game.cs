@@ -98,6 +98,7 @@ namespace Homework1.Model
         private static void DrawObjects()
         {            
             Buffer.Graphics.Clear(Color.Black);
+            Buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(50, 50, 100, 100));
             foreach (BaseObject obj in _objs) obj.Draw();
             Buffer.Render();
         }
@@ -112,13 +113,23 @@ namespace Homework1.Model
             }
         }
 
+        private static void LoadChaoticCircle(int a, int b, int minSize = 5, int maxSize = 20)
+        {
+            int sizeObj;
+            for (int i = a; i < b; i++)
+            {
+                sizeObj = Random.Next(minSize, maxSize + 1);
+                _objs[i] = new ChaoticCircle(new Point(Random.Next(10, 600), Game.Random.Next(i*10, i * 20)), new Point(5 - i, 5 - i), new Size(sizeObj, sizeObj));
+            }
+        }
+
         private static void LoadStars(int a, int b, int minSize = 5, int maxSize = 20)
         {
             int sizeObj; 
             for (int i = a; i < b; i++)
             {
                 sizeObj = Random.Next(minSize, maxSize + 1);
-                _objs[i] = new Star(new Point(600, i * 20), new Point(-i, 0), new Size(sizeObj, sizeObj));
+                _objs[i] = new Star(new Point(Random.Next(10, 600), i * 20), new Point(-i, 0), new Size(sizeObj, sizeObj));
             }
         }
 
@@ -128,7 +139,7 @@ namespace Homework1.Model
             for (int i = a; i < b; i++)
             {
                 sizeObj = Random.Next(minSize, maxSize + 1);
-                _objs[i] = new Rhombus(new Point(600, i * 20), new Point(-i, 5-i), new Size(sizeObj, sizeObj));
+                _objs[i] = new Rhombus(new Point(Random.Next(100, 600), i * 20), new Point(-i, 5-i), new Size(sizeObj, sizeObj));
             }
         }
 
@@ -176,13 +187,17 @@ namespace Homework1.Model
 
         private static void Load()
         {
-            _objs = new BaseObject[35];
+            _objs = new BaseObject[65];
 
-            int objLength = _objs.Length - 5;
+            int objLength = _objs.Length - 35;
 
-            LoadBaseObjects(0, objLength / 3, 5, 10); 
-            LoadStars(objLength / 3, 2 * objLength / 3, 4, 6);
-            LoadRhombus(2 * objLength / 3, objLength, 5, 8);             
+            LoadBaseObjects(0, objLength / 3, 3, 5); 
+            LoadStars(objLength / 3, 2 * objLength / 3, 3, 5);
+            LoadRhombus(2 * objLength / 3, objLength, 4, 6);
+            LoadChaoticCircle(objLength, objLength + 30, 2, 2);
+
+            objLength += 30;
+            
             LoadRocket(objLength, objLength + 1, 2, 2);
             LoadPlanet(objLength + 1, objLength + 2, "Homework1.Images.planet_40px.png", 2, 2);
             LoadPlanet(objLength + 2, objLength + 3, "Homework1.Images.venus_planet_48px.png", 2, 2);

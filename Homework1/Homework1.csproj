@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Data\Asteroid.cs" />
     <Compile Include="Data\BaseObject.cs" />
+    <Compile Include="Data\ChaoticCircle.cs" />
     <Compile Include="Data\Planet.cs" />
     <Compile Include="Data\Rhombus.cs" />
     <Compile Include="Data\Rocket.cs" />
@@ -92,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Images\venus_planet_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\new_moon_30px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

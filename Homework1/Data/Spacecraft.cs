@@ -19,9 +19,9 @@ namespace Homework1.Data
         }
 
         public override void Update()
-        {
+        { 
             MoveBottomToTop();
-            MoveLeftToRight();
+            MoveLeftToRight(); 
         }
     }
 }

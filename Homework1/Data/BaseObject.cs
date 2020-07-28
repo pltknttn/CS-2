@@ -52,28 +52,28 @@ namespace Homework1.Data
             if (Pos.Y > Game.Height) Dir.Y = -Dir.Y;
         }
 
-        protected void MoveLeftToRight()
+        protected void MoveLeftToRight(int delta = 0)
         {
-            Pos.X = Pos.X - Dir.X + 2;
+            Pos.X = Pos.X - Dir.X + delta;
             if (Pos.X > Game.Width) Pos.X = 0;
         }
 
-        protected void MoveRightToLeft()
+        protected void MoveRightToLeft(int delta = 0)
         {
-            Pos.X = Pos.X + Dir.X - 2;
+            Pos.X = Pos.X + Dir.X - delta;
             if (Pos.X < 0) Pos.X = Game.Width + Size.Width;
         }
 
-        protected void MoveTopToBottom()
+        protected void MoveTopToBottom(int delta = 0)
         {
-            Pos.Y = Pos.Y - Dir.Y + 2;
+            Pos.Y = Pos.Y - Dir.Y + delta;
             if (Pos.Y > Game.Height) Pos.Y = 0;
         }
 
-        protected void MoveBottomToTop()
+        protected void MoveBottomToTop(int delta = 0)
         {
-            Pos.Y = Pos.Y + Dir.Y - 2;
-            if (Pos.Y < 0) Pos.Y = Game.Height + Size.Height;
+            Pos.Y = Pos.Y + Dir.Y - delta;
+            if (Pos.Y < 0) Pos.Y = Game.Height + Size.Height; 
         }
          
         protected void MoveBottomToRight()
