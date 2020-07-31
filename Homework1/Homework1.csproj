@@ -46,12 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Data\Asteroid.cs" />
+    <Compile Include="Data\BaseObject.cs" />
+    <Compile Include="Data\ChaoticCircle.cs" />
+    <Compile Include="Data\Planet.cs" />
+    <Compile Include="Data\Rhombus.cs" />
+    <Compile Include="Data\Rocket.cs" />
+    <Compile Include="Data\Spacecraft.cs" />
+    <Compile Include="Data\Star.cs" />
+    <Compile Include="Model\Game.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -75,6 +78,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\icons8_space_shuttle_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\asteroid_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\planet_40px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\rocket_100px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\venus_planet_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\new_moon_30px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
