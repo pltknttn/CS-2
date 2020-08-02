@@ -10,10 +10,13 @@ namespace Homework1.Data
 { 
     class Asteroid : BaseObject
     {
-        Bitmap original;
+        static Bitmap original = new Bitmap(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("Homework1.Images.asteroid_30px.png"));
 
-        public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size) {
-            original = new Bitmap(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("Homework1.Images.asteroid_30px.png"));
+        public int Power { get; set; }
+
+        public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size, original)
+        {
+            Power = 1;
         }
 
         public override void Draw()

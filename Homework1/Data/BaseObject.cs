@@ -8,12 +8,18 @@ using System.Threading.Tasks;
 
 namespace Homework1.Data
 {
-    class BaseObject
+    abstract class BaseObject
     {
         protected Point Pos;
         protected Point Dir;
         protected Size Size;
         protected Image Image;
+
+        public BaseObject(Point pos) : this(pos, new Size(5, 5)) { }
+
+        public BaseObject(Point pos, Size size) : this(pos, new Point(0, 0), size) { }
+
+        public BaseObject(Point pos, Point dir, Size size) : this(pos, dir, size, null) { }
 
         public BaseObject(Point pos, Point dir, Size size, Image image)
         {
@@ -31,17 +37,11 @@ namespace Homework1.Data
             Image = image;
         }
 
-        public BaseObject(Point pos, Point dir, Size size) : this(pos, dir, size, null) { }
+        public abstract void Draw();
 
-        public virtual void Draw()
-        {
-            if (Image == null)
-                Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
-            else
-                Game.Buffer.Graphics.DrawImage(Image, Pos.X - Size.Width, Pos.Y - Size.Height);
-        }
+        public abstract void Update();
 
-        public virtual void Update()
+        protected void MoveBase()
         {
             Pos.X += Dir.X;
             Pos.Y += Dir.Y;

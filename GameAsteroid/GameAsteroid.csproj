@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7307CA82-5B57-4A7D-80D7-3C91E7B5EC06}</ProjectGuid>
+    <ProjectGuid>{1A5B8179-E685-4731-9637-3C651895CAA3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Homework1</RootNamespace>
-    <AssemblyName>Homework1</AssemblyName>
+    <RootNamespace>GameAsteroid</RootNamespace>
+    <AssemblyName>GameAsteroid</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,12 +48,9 @@
   <ItemGroup>
     <Compile Include="Data\Asteroid.cs" />
     <Compile Include="Data\BaseObject.cs" />
-    <Compile Include="Data\ChaoticCircle.cs" />
-    <Compile Include="Data\Circle.cs" />
-    <Compile Include="Data\Planet.cs" />
-    <Compile Include="Data\Rhombus.cs" />
-    <Compile Include="Data\Rocket.cs" />
-    <Compile Include="Data\Spacecraft.cs" />
+    <Compile Include="Data\Bullet.cs" />
+    <Compile Include="Data\GameObjectException.cs" />
+    <Compile Include="Data\ICollision.cs" />
     <Compile Include="Data\Star.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Program.cs" />
@@ -79,24 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\icons8_space_shuttle_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\asteroid_30px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\planet_40px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\rocket_100px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\venus_planet_48px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\new_moon_30px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -103,13 +103,13 @@ namespace Homework1.Model
             Buffer.Render();
         }
 
-        private static void LoadBaseObjects(int a, int b, int minSize = 5, int maxSize = 20)
+        private static void LoadCircle(int a, int b, int minSize = 5, int maxSize = 20)
         {
             int sizeObj;
             for (int i = a; i < b; i++)
             {
                 sizeObj = Random.Next(minSize, maxSize + 1);
-                _objs[i] = new BaseObject(new Point(600, i * 20), new Point(15 - i, 15 - i), new Size(sizeObj, sizeObj));
+                _objs[i] = new Circle(new Point(600, i * 20), new Point(15 - i, 15 - i), new Size(sizeObj, sizeObj));
             }
         }
 
@@ -191,7 +191,7 @@ namespace Homework1.Model
 
             int objLength = _objs.Length - 35;
 
-            LoadBaseObjects(0, objLength / 3, 3, 5); 
+            LoadCircle(0, objLength / 3, 3, 5); 
             LoadStars(objLength / 3, 2 * objLength / 3, 3, 5);
             LoadRhombus(2 * objLength / 3, objLength, 4, 6);
             LoadChaoticCircle(objLength, objLength + 30, 2, 2);

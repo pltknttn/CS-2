@@ -8,18 +8,17 @@ using System.Threading.Tasks;
 
 namespace Homework1.Data
 {
-    class ChaoticCircle : BaseObject
+    class Circle : BaseObject
     {
-        public ChaoticCircle(Point pos, Point dir, Size size) : base(pos, dir, size) { }
-
+        public Circle(Point pos, Point dir, Size size) : base(pos, dir, size) { }
+         
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
-        }
-
+        } 
         public override void Update()
         {
-            MoveСhaotic();
+            MoveBase();
         }
     }
 }

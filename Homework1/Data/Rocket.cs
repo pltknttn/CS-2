@@ -10,9 +10,8 @@ namespace Homework1.Data
 {
     class Rocket : BaseObject
     {
-        Bitmap original;
-        public Rocket(Point pos, Point dir, Size size) : base(pos, dir, size) {
-            original = new Bitmap(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("Homework1.Images.rocket_100px.png"));
+        static Bitmap original = new Bitmap(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("Homework1.Images.rocket_100px.png")); 
+        public Rocket(Point pos, Point dir, Size size) : base(pos, dir, size, original) { 
         }
 
         public override void Draw()
