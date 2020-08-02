@@ -40,7 +40,7 @@ namespace Homework2.Data
 
         public override double GetAvgSalary()
         {
-            return 20.8 * HourlyRate * HourlyRate;
+            return 20.8 * HoursWorked * HourlyRate;
         }
     }
 }
