@@ -22,7 +22,7 @@ namespace GameAsteroid.Data
 
         public override void Draw()
         {
-            Game.Buffer.Graphics.FillRectangle(Brushes.White, Pos.X, Pos.Y, Size.Width, Size.Height);
+            Game.Buffer.Graphics.DrawImage(GameResources.AsteroidImage, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
         public override void Update()
@@ -48,5 +48,11 @@ namespace GameAsteroid.Data
                 Power = this.Power
             };
         }
+
+        public override string GetName()
+        {
+            return $"Asteroid_{ObjectUid}";
+        }
+
     }
 }

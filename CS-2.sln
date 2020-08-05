@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework2", "Homework2", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAsteroid", "GameAsteroid\GameAsteroid.csproj", "{1A5B8179-E685-4731-9637-3C651895CAA3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework3", "Homework3", "{8590D6FD-2543-4453-9EDC-3C25E77706EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,7 +37,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0D923831-04C7-4796-AA3F-1F7D175E9766} = {85258392-BD13-447C-A16C-E81EAF4F44FD}
-		{1A5B8179-E685-4731-9637-3C651895CAA3} = {85258392-BD13-447C-A16C-E81EAF4F44FD}
+		{1A5B8179-E685-4731-9637-3C651895CAA3} = {8590D6FD-2543-4453-9EDC-3C25E77706EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE97EF8E-544D-4BAA-8E00-C4170DA5BC62}

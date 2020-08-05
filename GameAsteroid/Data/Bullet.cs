@@ -12,41 +12,38 @@ namespace GameAsteroid.Data
     {
         public int Power = 0;
         public int MoveType = 0;
-        
-        public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size) {
-            MoveType = Game.Random.Next(0, 4);
-            Power = Game.Random.Next(1, 4);
+        public int Step = 0;
+
+        public Bullet(Point pos, Point dir, Size size): this(pos, dir, size, 0, 0)
+        { } 
+        public Bullet(Point pos, Point dir, Size size, int move, int step) : base(pos, dir, size) {
+            MoveType = move;
+            Step = step;
+            Power = Game.Random.Next(4, 21);
         }
 
         public override void Draw()
         {
-            //Game.Buffer.Graphics.DrawRectangle(Pens.OrangeRed, Pos.X, Pos.Y, Size.Width, Size.Height);
-            Game.Buffer.Graphics.FillRectangle(Brushes.OrangeRed, Pos.X, Pos.Y, Size.Width, Size.Height);
+            Game.Buffer.Graphics.FillRectangle(Brushes.OrangeRed, Pos.X+Step, Pos.Y+Step, Size.Width, Size.Height); 
         }
 
         public override void Update()
-        {           
+        {
             switch (MoveType)
             {
-                case 1:
-                    MoveLeftToRight(Power);
-                    if (Pos.Y >= Game.Height) Pos.Y = Size.Height;
-                    if (Pos.Y <= 0) Pos.Y = Game.Height + Size.Height;
-                    break;
-                case 2:
-                    MoveTopToBottom(Power);
-                    if (Pos.X >= Game.Width) Pos.X = Size.Width;
-                    break;
-                case 3:
-                    Pos.X = Pos.X + Power;
-                    MoveTopToLeft();
+                case 0:                                       
+                    Pos.X += Dir.X + Power; 
                     break;
                 default:
-                    MoveRightToLeft(Power);
-                    if (Pos.Y >= Game.Height) Pos.Y = Size.Height;
-                    if (Pos.Y <= 0) Pos.Y = Game.Height + Size.Height;
+                    Pos.Y -= Dir.Y + Power/2; 
+                    Pos.X += Dir.X + Power/2; 
                     break;
             } 
+        }
+
+        public override string GetName()
+        {
+            return $"Bullet_{ObjectUid}";
         }
     }
 }

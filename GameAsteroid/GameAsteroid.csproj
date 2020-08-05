@@ -53,8 +53,12 @@
     <Compile Include="Data\Asteroid.cs" />
     <Compile Include="Data\BaseObject.cs" />
     <Compile Include="Data\Bullet.cs" />
+    <Compile Include="Data\GameLog.cs" />
     <Compile Include="Data\GameObjectException.cs" />
     <Compile Include="Data\ICollision.cs" />
+    <Compile Include="Data\IMove.cs" />
+    <Compile Include="Data\MedicineKit.cs" />
+    <Compile Include="Data\Ship.cs" />
     <Compile Include="Data\Star.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Program.cs" />
@@ -80,6 +84,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\asteroid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\doctors_bag.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\space_shuttle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
