@@ -12,7 +12,8 @@ namespace GameAsteroid.Model
     {
         public static Image ShipImage = Image.FromFile(@"Images\space_shuttle.png");
         public static Image AsteroidImage = Image.FromFile(@"Images\asteroid.png");
-        public static Image MedKitImage = Image.FromFile(@"Images\doctors_bag.png");        
+        public static Image MedKitImage = Image.FromFile(@"Images\doctors_bag.png");
+        public static Icon GameIco = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("GameAsteroid.icons8_space_shuttle.ico"));
     }
 
     static class Game
