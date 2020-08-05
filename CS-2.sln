@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAsteroid", "GameAsteroi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework3", "Homework3", "{8590D6FD-2543-4453-9EDC-3C25E77706EB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework1", "Homework1", "{3BB17D5F-A48D-4EC7-A444-20B06D242AF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson3", "Lesson3\Lesson3.csproj", "{955F87E1-848E-4596-AAA2-0D17A64F9342}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,13 +35,19 @@ Global
 		{1A5B8179-E685-4731-9637-3C651895CAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A5B8179-E685-4731-9637-3C651895CAA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A5B8179-E685-4731-9637-3C651895CAA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{955F87E1-848E-4596-AAA2-0D17A64F9342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{955F87E1-848E-4596-AAA2-0D17A64F9342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{955F87E1-848E-4596-AAA2-0D17A64F9342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{955F87E1-848E-4596-AAA2-0D17A64F9342}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{7307CA82-5B57-4A7D-80D7-3C91E7B5EC06} = {3BB17D5F-A48D-4EC7-A444-20B06D242AF4}
 		{0D923831-04C7-4796-AA3F-1F7D175E9766} = {85258392-BD13-447C-A16C-E81EAF4F44FD}
 		{1A5B8179-E685-4731-9637-3C651895CAA3} = {8590D6FD-2543-4453-9EDC-3C25E77706EB}
+		{955F87E1-848E-4596-AAA2-0D17A64F9342} = {8590D6FD-2543-4453-9EDC-3C25E77706EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE97EF8E-544D-4BAA-8E00-C4170DA5BC62}
