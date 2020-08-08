@@ -25,8 +25,8 @@ namespace GameAsteroid.Data
 
             if (size == null) throw new GameObjectException("Размер объекта не задан.");
 
-            if (size.Height <= 0 || size.Height > Game.Height) throw new GameObjectException($"Некорректный размер объекта (высота объекта больше 0 и меньше {Game.Height}).");
-            if (size.Width <= 0 || size.Width > Game.Width) throw new GameObjectException($"Некорректный размер объекта (ширина объекта больше 0 и меньше {Game.Width}.");
+            if (Game.Height > 0 && (size.Height <= 0 || size.Height > Game.Height)) throw new GameObjectException($"Некорректный размер объекта (высота объекта больше 0 и меньше {Game.Height}).");
+            if (Game.Height > 0 && (size.Width <= 0 || size.Width > Game.Width)) throw new GameObjectException($"Некорректный размер объекта (ширина объекта больше 0 и меньше {Game.Width}.");
 
             Pos = pos;
 

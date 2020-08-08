@@ -41,6 +41,9 @@ namespace GameAsteroid.Data
             } 
         }
 
+        // Считаем пуля "погибла", если она вышла за пределы экрана
+        public bool IsDie => Pos.X < 0 || Pos.X > Game.Width || Pos.Y < 0 || Pos.Y > Game.Height;
+
         public override string GetName()
         {
             return $"Bullet_{ObjectUid}";

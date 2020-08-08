@@ -22,9 +22,10 @@ namespace GameAsteroid.Model
 
         private static BufferedGraphicsContext _context;
         private static BaseObject[] _objs;
-        private static Bullet[] _bullets;
-        private static Asteroid[] _asteroids;
-        private static MedicineKit[] _medKits;
+        private static List<Bullet> _bullets = new List<Bullet>(2000);
+        private static List<Asteroid> _asteroids = new List<Asteroid>();
+        private static int _countAsteroids;
+        private static List<MedicineKit> _medKits = new List<MedicineKit>(200); 
         private static Ship _ship;
         private static Timer _timer;
         private static int MaxWidth = Screen.PrimaryScreen.Bounds.Width;
@@ -132,16 +133,13 @@ namespace GameAsteroid.Model
             lock (_ship)
             {
                 switch (e.KeyCode)
-                {
+                { 
                     case Keys.ControlKey:
                         {
                             if (_ship == null) break;
-                            int move = Random.Next(0, 2); 
-                            for (int j = 0; j < _bullets.Length; j++)
-                            { 
-                                _bullets[j] = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(4, 0), new Size(_ship.Rect.Width / 6, _ship.Rect.Height / 12), move, 5);
-                                _ship.Strike(1);
-                            }
+                            int move = Random.Next(0, 2);
+                            _bullets.Add(new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(4, 0), new Size(_ship.Rect.Width / 6, _ship.Rect.Height / 12), move, 5));
+                            _ship.Strike(1); 
                             break;
                         }
                     case Keys.Up: _ship.Up(); break;
@@ -172,6 +170,7 @@ namespace GameAsteroid.Model
                 Buffer.Graphics.DrawString($"Energy: {_ship.Energy}", SystemFonts.DefaultFont, Brushes.White, 0, 3);
                 Buffer.Graphics.DrawString($"Shoots: {_ship.ShootsCounter}", SystemFonts.DefaultFont, Brushes.White, 0, 17);
                 Buffer.Graphics.DrawString($"Hit: {_ship.HitCounter}", SystemFonts.DefaultFont, Brushes.White, 0, 31);
+                Buffer.Graphics.DrawString($"Asteroids: {_asteroids.Count}", SystemFonts.DefaultFont, Brushes.White, 0, 45);
             }
             Buffer.Render();            
         }
@@ -183,61 +182,95 @@ namespace GameAsteroid.Model
             Buffer.Graphics.DrawString($"The End", _font, Brushes.White, 200, 100); 
             Buffer.Render();            
         }
-                                
+               
+        private static void GenerateAsteroids(int count)
+        {
+            if (count <= 0) return;
+            _asteroids = null;
+            _asteroids = new List<Asteroid>(count);
+            for (int i = 0; i < count; i++)
+            {
+                int r = Random.Next(10, 55);
+                _asteroids.Add(new Asteroid(new Point(Random.Next(0, Game.Width), Random.Next(0, Game.Height)), new Point(-r / 5, r), new Size(r, r)));
+            }
+            _countAsteroids = _asteroids.Count;
+            ActionWriteLog?.Invoke($"Game: GenerateAsteroids {_countAsteroids}");
+        }
+        private static void GenerateMedKits(int count, int maxEnergy)
+        {
+            for (int j = 0; j < count; j++)
+            {
+                _medKits.Add(new MedicineKit(new Point(Random.Next(_ship.Rect.X + Random.Next(10, 50), _ship.Rect.X + Random.Next(100, 500)),
+                    Random.Next(_ship.Rect.Y + Random.Next(10, 40), _ship.Rect.Y + Random.Next(100, 400))),
+                    _nilDir, _medKitSize, (maxEnergy > 1 ? Random.Next(1, maxEnergy) : 1)));
+            }
+        }
         private static void Load()
         {
             ActionWriteLog?.Invoke("Game: Load");
-
             _ship = new Ship(new Point(10, 400), new Point(5, 5), new Size(36, 36));            
-            _objs = new BaseObject[30];
-            _asteroids = new Asteroid[Random.Next(4, 16)];
-            _bullets = new Bullet[Random.Next(3, 20)];
-            _medKits = new MedicineKit[Random.Next(1, 10)];
+            _objs = new BaseObject[30];             
             for (int i = 0; i < _objs.Length; i++)
             {
                 int r = Random.Next(5, 50);
                 _objs[i] = new Star(new Point(1000, Random.Next(0, Game.Height)), new Point(-r, r), new Size(3, 3));
-            }
-            for(int i = 0; i < _asteroids.Length; i++)
-            {
-                int r = Random.Next(10, 55);
-                _asteroids[i] = new Asteroid(new Point(Random.Next(0, Game.Width), Random.Next(0, Game.Height)), new Point(-r / 5, r), new Size(r, r));
-            }
-            ActionWriteLog?.Invoke($"Game: Objs = {_objs.Length}, Asteroids = {_asteroids.Length}, Bullets = {_bullets.Length}");
+            } 
+            GenerateAsteroids(Random.Next(4, 11)); 
+            ActionWriteLog?.Invoke($"Game: Objs = {_objs.Length}, Asteroids = {_asteroids.Count}, Bullets = {_bullets.Count}");
         }
+
+        private static int MedKitsEnergy => _medKits.Sum(x => x.Energy);
 
         private static void Update()
         {
             foreach (BaseObject obj in _objs) obj?.Update();
-            for (int i = 0; i < _asteroids.Length; i++)
+            if (_ship == null) return;
+            for (int i = 0; i < _bullets.Count; i++)
+            {
+                if (!_bullets[i].IsDie) _bullets[i]?.Update();
+                else
+                {
+                    //Пуля потеряла смысл, так как вышла за пределы экрана. Удаляем
+                    _bullets[i] = null;
+                    _bullets.RemoveAt(i);
+                    i--;
+                }
+            }
+            bool bulletHitTheMark = false;
+            for (int i = 0; i < _asteroids.Count; i++)
             {
                if (_asteroids[i] == null) continue;
-
                 _asteroids[i].Update();
-
-                bool bulletHitTheMark = false;
-                for (int j = 0; j < _bullets.Length; j++)
+                bulletHitTheMark = false;
+                for (int j = 0; j < _bullets.Count; j++)
                 { 
                     if (_bullets[j] != null && _bullets[j].Collision(_asteroids[i]))
                     {
+                        //Пуля столкнулась с астероидом
                         System.Media.SystemSounds.Hand.Play();
                         bulletHitTheMark = true;
                         _bullets[j] = null;
+                        _bullets.RemoveAt(j);
                         _ship?.Slay(1);
-                    }
+                        j--;
+                    } 
                 }
                 if (bulletHitTheMark)
                 {
+                    //Пуля(и) сбили астероид
                     _asteroids[i] = null;
+                    _asteroids.RemoveAt(i);
+                    i--;
                     continue;
-                }
-                if (_ship == null) continue;
-                for (int j = 0; j < _medKits.Length; j++)
+                }                
+                for (int j = 0; j < _medKits.Count; j++)
                 {
                     if (_medKits[j] != null && _asteroids[i].Collision(_medKits[j]))
                     {
                         System.Media.SystemSounds.Exclamation.Play();
                         _medKits[j] = null;
+                        _medKits.RemoveAt(j);
+                        j--;
                         continue;
                     }
                     if (_medKits[j] != null && _ship.Collision(_medKits[j]))
@@ -245,26 +278,28 @@ namespace GameAsteroid.Model
                         System.Media.SystemSounds.Exclamation.Play();
                         _ship.EnergyHigh(_medKits[j].Energy);
                         _medKits[j] = null;
+                        _medKits.RemoveAt(j);
+                        j--;
                         continue;
                     }                   
                 }
                 if (!_ship.Collision(_asteroids[i])) continue;
 
                 _ship.EnergyLow(Random.Next(1, 10));
-
                 System.Media.SystemSounds.Asterisk.Play();
 
                 if (_ship.Energy <= 0) _ship.Die();
                 else _ship.Move(new Point(Random.Next(0, Game.Width), Random.Next(0, Game.Height)));  
-            }
-            foreach (BaseObject obj in _bullets) obj?.Update();
+            }            
             if (_ship != null && _ship.Energy < Game.MAX_ENERGY)
             {
-                for (int j = 0; j < _medKits.Length; j++)
-                {
-                    if (_medKits[j] != null) continue;
-                    _medKits[j] = new MedicineKit(new Point(Random.Next(_ship.Rect.X + Random.Next(10, 50), _ship.Rect.X + Random.Next(100, 500)), Random.Next(_ship.Rect.Y + Random.Next(10, 40), _ship.Rect.Y + Random.Next(100, 400))), _nilDir, _medKitSize, Random.Next(5, Game.MAX_ENERGY));
-                }
+                //Определяем сколько энергии нужно добавить и если есть необъодимость добавляем 
+                int needEnergy = Game.MAX_ENERGY - MedKitsEnergy - _ship.Energy;
+                if (needEnergy > 0) GenerateMedKits(Random.Next(0, needEnergy), needEnergy);
+            }
+            if (_asteroids.Count == 0)
+            {
+                GenerateAsteroids(_countAsteroids + 1);
             }
         }
 
