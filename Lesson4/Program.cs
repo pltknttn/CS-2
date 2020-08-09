@@ -21,6 +21,8 @@ namespace Lesson4
            Автор: Полятыкина Татьяна
          */
 
+        static int OrderByFun(KeyValuePair<string, int> pair) => pair.Value; 
+        
         static Random _random = new Random();
         static void Main()
         {
@@ -115,6 +117,13 @@ namespace Lesson4
                 Console.WriteLine("{0} - {1}", pair.Key, pair.Value);
             }
 
+            Console.WriteLine("\n\rСортировка с использованием функции:");
+            d = dict.OrderBy(OrderByFun);
+            foreach (var pair in d)
+            {
+                Console.WriteLine("{0} - {1}", pair.Key, pair.Value);
+            }
+             
             Console.WriteLine("\n\rСортировка с использованием простого Linq:");
             d = (from i in dict orderby i.Value ascending select i);
             foreach (var pair in d)
