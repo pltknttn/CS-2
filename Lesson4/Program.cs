@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,9 +57,28 @@ namespace Lesson4
                 Console.WriteLine($"Элемент {i} встречается {countElements} раз.");
             }
 
+            Console.WriteLine($"\n\rВариант посчитать используя расширения:");
+            foreach (var i in listInts.Distinct())
+            {
+                countElements = i.CountElements(listInts);
+                Console.WriteLine($"Элемент {i} встречается {countElements} раз.");
+            }
 
-            Console.WriteLine($"\n\rВариант посчитать используя linq:");
+            Console.WriteLine($"\n\rВариант посчитать используя расширения и условие (например посчитать кол-во элементов, которые элемент больше текущего):");
+            foreach (var i in listInts.Distinct())
+            {
+                countElements = i.CountElements(listInts, (x, y) => x > y);
+                Console.WriteLine($"Элемент {i} встречается {countElements} раз.");
+            }
+
+            Console.WriteLine($"\n\rВариант посчитать используя linq с расширениями:");
             foreach (var item in listInts.Distinct().Select(x=> new { Item = x, Counts = listInts.Count(y=>y==x)}))
+            {
+                Console.WriteLine($"Элемент {item.Item} встречается {item.Counts} раз.");
+            }
+
+            Console.WriteLine($"\n\rВариант посчитать используя простой linq:");
+            foreach (var item in (from i in listInts group i by i into g select new { Item = g.Key, Counts = g.Count() }))
             {
                 Console.WriteLine($"Элемент {item.Item} встречается {item.Counts} раз.");
             }
@@ -94,6 +114,13 @@ namespace Lesson4
             {
                 Console.WriteLine("{0} - {1}", pair.Key, pair.Value);
             }
+
+            Console.WriteLine("\n\rСортировка с использованием простого Linq:");
+            d = (from i in dict orderby i.Value ascending select i);
+            foreach (var pair in d)
+            {
+                Console.WriteLine("{0} - {1}", pair.Key, pair.Value);
+            } 
 
             Console.WriteLine("\n\rДля выхода нажмите любую клавишу...");
             Console.ReadKey();

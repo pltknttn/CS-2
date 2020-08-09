@@ -23,6 +23,6 @@ namespace Lesson4
             int count = 0;
             foreach (var element in collections) if (fun?.Invoke(element) == true) count++;
             return count;
-        }
-    }
+        } 
+    }    
 }
