@@ -32,12 +32,7 @@
             <StackPanel Orientation="Horizontal">
                 <Label Content="Фамилия" Width="100"/>
                 <TextBox MinWidth="380" Text="{Binding EditedEmployee.Surname}"></TextBox>
-            </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Дата рождения" Width="100"/>
-                <DatePicker MinWidth="380" Text="{Binding EditedEmployee.DateOfBirth}" SelectedDateFormat="Short"></DatePicker>
-            </StackPanel>
+            </StackPanel> 
             <GridSplitter Height="10" Background="Transparent"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Адрес" Width="100"/>
@@ -51,16 +46,16 @@
             <GridSplitter Height="10" Background="Transparent"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Отдел" Width="100"/>
-                <ComboBox MinWidth="380" ItemsSource="{Binding Departments}" 
+                <ComboBox Name="cbDepartment" MinWidth="380" ItemsSource="{Binding Departments}" 
                           SelectedValuePath="Id" DisplayMemberPath="Name"
-                          SelectedValue="{Binding Path=EditedEmployee.DepartmentId, Mode=TwoWay}"></ComboBox>
+                          SelectedValue="{Binding Path=EditedEmployee.DepartmentId}"></ComboBox>
             </StackPanel>
             <GridSplitter Height="10" Background="Transparent"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Должность" Width="100"/>
-                <ComboBox MinWidth="380" ItemsSource="{Binding Positions}" 
+                <ComboBox Name="cbPosition" MinWidth="380" ItemsSource="{Binding Positions}" 
                           SelectedValuePath="Id" DisplayMemberPath="Name"
-                          SelectedValue="{Binding Path=EditedEmployee.PositionId, Mode=TwoWay}" ></ComboBox>
+                          SelectedValue="{Binding Path=EditedEmployee.PositionId}" ></ComboBox>
             </StackPanel>
             <GridSplitter Height="10" Background="Transparent"/>
             <StackPanel Orientation="Horizontal">

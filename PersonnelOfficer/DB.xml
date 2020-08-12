@@ -2,31 +2,28 @@
 <Database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Employees>
     <Employee>
-      <Id>1</Id>
-      <FirstName>Елена</FirstName>
-      <Patronymic>Ивановна</Patronymic>
-      <Surname>Васильева</Surname>
-      <DateOfBirth>2001-01-01T00:00:00</DateOfBirth>
-      <Salary>60000</Salary>
-      <PositionId>2</PositionId>
-      <DepartmentId>4</DepartmentId>
-    </Employee>
-    <Employee>
       <Id>2</Id>
       <FirstName>Василий</FirstName>
       <Patronymic>Геннадьевич</Patronymic>
       <Surname>Петров</Surname>
-      <DateOfBirth>2001-12-01T00:00:00</DateOfBirth>
       <Salary>30000</Salary>
       <PositionId>1</PositionId>
       <DepartmentId>1</DepartmentId>
+    </Employee>
+    <Employee>
+      <Id>1</Id>
+      <FirstName>Елена</FirstName>
+      <Patronymic>Ивановна</Patronymic>
+      <Surname>Васильева</Surname>
+      <Salary>60000</Salary>
+      <PositionId>2</PositionId>
+      <DepartmentId>4</DepartmentId>
     </Employee>
     <Employee>
       <Id>3</Id>
       <FirstName>Ирина</FirstName>
       <Patronymic>Анатольевна</Patronymic>
       <Surname>Люсина</Surname>
-      <DateOfBirth>1990-08-12T14:42:27.8765101+04:00</DateOfBirth>
       <Salary>80000</Salary>
       <PositionId>3</PositionId>
       <DepartmentId>1</DepartmentId>

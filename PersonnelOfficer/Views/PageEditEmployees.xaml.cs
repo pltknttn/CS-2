@@ -30,11 +30,18 @@ namespace PersonnelOfficer.Views
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             (this.DataContext as MainWindowModel)?.Init();
+           
+            cbPosition.SelectedValue = (this.DataContext as MainWindowModel)?.EditedEmployee.PositionId;
+            cbDepartment.SelectedValue = (this.DataContext as MainWindowModel)?.EditedEmployee.DepartmentId;
         }
 
         private void ButtonOk_Click(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as MainWindowModel)?.SaveEditEmployee();
+            if ((this.DataContext as MainWindowModel)?.EditedEmployee == null) return;
+
+            (this.DataContext as MainWindowModel).EditedEmployee.PositionId = int.Parse(cbPosition.SelectedValue.ToString());
+            (this.DataContext as MainWindowModel).EditedEmployee.DepartmentId = int.Parse(cbDepartment.SelectedValue.ToString()); 
+            (this.DataContext as MainWindowModel).SaveEditEmployee();
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)

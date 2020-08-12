@@ -14,9 +14,6 @@ namespace PersonnelOfficer.Data
         public string Patronymic { get; set; }
         public string Surname { get; set; }
         public string Title { get; set; }
-        public DateTime DateOfBirth { get; set; } = DateTime.Now.AddYears(-30);
-        [XmlIgnore]
-        public int Age => UtilClass.GetYearDiff(DateOfBirth, DateTime.Now);
         public double Salary { get; set; } 
         public string Address { get; set; } 
         public string Telephone { get; set; }

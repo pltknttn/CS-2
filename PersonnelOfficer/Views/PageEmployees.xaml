@@ -21,11 +21,9 @@
                         <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Width="100">Имя</GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Patronymic}" Width="100">Отчество</GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Surname}" Width="150">Фамилия</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Title}"  Width="150">Обращение</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=DateOfBirth}" Width="100">Дата рождения</GridViewColumn>              
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Title}"  Width="150">Обращение</GridViewColumn>         
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Address}" Width="150">Адрес</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Email}" Width="100">Почта</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=DepartmentId}" Width="150">Отдел ИД</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Email}" Width="100">Почта</GridViewColumn> 
                         <GridViewColumn Header="Отдел"> 
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -33,9 +31,7 @@
                                               ItemsSource="{Binding ElementName=dgEmployees,  Path=DataContext.Departments}"  />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate> 
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=PositionId}" 
-                                        Width="150">Должность ИД</GridViewColumn>
+                        </GridViewColumn> 
                         <GridViewColumn Header="Должность">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -46,16 +42,7 @@
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
-            </ListView>
-            <!--<DataGrid x:Name="dgEmployees" ItemsSource="{Binding Source=Employees}" SelectedItem="{Binding CurrentEmployee}"  AutoGenerateColumns="False" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Id}" Header="Ид"  Width="50"/>
-                    <DataGridTextColumn Binding="{Binding FirstName}" Header="Имя" Width="100"/>
-                    <DataGridTextColumn Binding="{Binding Patronymic}" Header="Отчество" Width="100"/>
-                    <DataGridTextColumn Binding="{Binding Surname}" Header="Фамилия" Width="150"/>
-                    <DataGridComboBoxColumn ItemsSource="{Binding Departments}"/>
-                </DataGrid.Columns>
-            </DataGrid>-->
+            </ListView> 
         </Border>
     </Grid>
 </Page>
