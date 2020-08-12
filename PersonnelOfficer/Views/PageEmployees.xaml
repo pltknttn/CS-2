@@ -1,0 +1,61 @@
+﻿<Page x:Class="PersonnelOfficer.Views.PageEmployees"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PersonnelOfficer"
+      xmlns:model="clr-namespace:PersonnelOfficer.Model"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Сотрудники"
+      d:DataContext="{d:DesignInstance Type={x:Type model:MainWindowModel}}"
+      Loaded="Page_Loaded"
+      >
+
+    <Grid>
+        <Border BorderBrush="Beige" BorderThickness="2">
+            <ListView x:Name="dgEmployees" ItemsSource="{Binding Employees}" SelectedItem="{Binding CurrentEmployee}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Width="50">Ид</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Width="100">Имя</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Patronymic}" Width="100">Отчество</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Surname}" Width="150">Фамилия</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Title}"  Width="150">Обращение</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=DateOfBirth}" Width="100">Дата рождения</GridViewColumn>              
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Address}" Width="150">Адрес</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Email}" Width="100">Почта</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=DepartmentId}" Width="150">Отдел ИД</GridViewColumn>
+                        <GridViewColumn Header="Отдел"> 
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox IsEditable="False" IsEnabled="False" Width="150" SelectedValue="{Binding Path=DepartmentId}" SelectedValuePath="Id" 
+                                              ItemsSource="{Binding ElementName=dgEmployees,  Path=DataContext.Departments}"  />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate> 
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=PositionId}" 
+                                        Width="150">Должность ИД</GridViewColumn>
+                        <GridViewColumn Header="Должность">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox  IsEditable="False" IsEnabled="False" Width="150" SelectedValue="{Binding Path=PositionId}" SelectedValuePath="Id" 
+                                               ItemsSource="{Binding ElementName=dgEmployees,  Path=DataContext.Positions}"  />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <!--<DataGrid x:Name="dgEmployees" ItemsSource="{Binding Source=Employees}" SelectedItem="{Binding CurrentEmployee}"  AutoGenerateColumns="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Header="Ид"  Width="50"/>
+                    <DataGridTextColumn Binding="{Binding FirstName}" Header="Имя" Width="100"/>
+                    <DataGridTextColumn Binding="{Binding Patronymic}" Header="Отчество" Width="100"/>
+                    <DataGridTextColumn Binding="{Binding Surname}" Header="Фамилия" Width="150"/>
+                    <DataGridComboBoxColumn ItemsSource="{Binding Departments}"/>
+                </DataGrid.Columns>
+            </DataGrid>-->
+        </Border>
+    </Grid>
+</Page>

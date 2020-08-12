@@ -1,13 +1,78 @@
-﻿<Window xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  x:Class="PersonnelOfficer.MainWindow"
+﻿<Window x:Class="PersonnelOfficer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PersonnelOfficer"
+        xmlns:model="clr-namespace:PersonnelOfficer.Model"
         mc:Ignorable="d"
-        Title="Кадровик" Height="450" Width="800"> 
-    
- <Frame Content="Frame" Source="PageEmployees.xaml">
+        Title="Кадровик" Height="800" Width="1000" WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance Type={x:Type model:MainWindowModel}}"
+        Loaded="Window_Loaded"
+        >
+    <Window.Resources>
+        
+        
+    </Window.Resources>
+    <Grid>        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.90*"/>
+        </Grid.RowDefinitions>
+        <ToolBarPanel Grid.Row="0" Orientation="Horizontal" Margin="0,2,2,2" Background="AliceBlue">
+            <GridSplitter HorizontalAlignment="Left" Style="{StaticResource ToolBarSplitter}"/>
+            <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                          ToolTip="Сотрудники" 
+                          Click="Button_Click" Tag="Employees" 
+                          IsChecked="True" 
+                          Style="{StaticResource ToogleRadioButtonStyle}">
+                <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/people.png" />
+            </RadioButton>
+            <GridSplitter HorizontalAlignment="Left" Style="{StaticResource ToolBarSplitter}"/>
+            <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                          ToolTip="Отделы" 
+                          Click="Button_Click" Tag="Departments"  
+                          Style="{StaticResource ToogleRadioButtonStyle}">
+                <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/permanent_job.png" /> 
+            </RadioButton>
+            <GridSplitter HorizontalAlignment="Left" Style="{StaticResource ToolBarSplitter}"/>
+            <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                          ToolTip="Должности" 
+                          Click="Button_Click" Tag="Positions"
+                          Style="{StaticResource ToogleRadioButtonStyle}">
+                <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/post_office.png" />
+            </RadioButton>
+
+            <GridSplitter HorizontalAlignment="Left" Style="{StaticResource ToolBarSplitter}"/>
+            <TextBlock x:Name="TextInfo" Text="Сотрудники" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="DarkBlue"/>
             
- </Frame> 
+            <GridSplitter HorizontalAlignment="Left" Style="{StaticResource ToolBarSplitter}"/>
+            <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                          ToolTip="Добавить" 
+                          Click="Button_Click" Tag="Add" 
+                          IsChecked="True" 
+                          Style="{StaticResource ToogleRadioButtonStyle}">
+                <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/plus.png" />
+            </RadioButton>
+            <GridSplitter HorizontalAlignment="Left" Style="{StaticResource ToolBarSplitter}"/>
+            <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                          ToolTip="Удалить" 
+                          Click="Button_Click" Tag="Edit"  
+                          Style="{StaticResource ToogleRadioButtonStyle}">
+                <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/pencil_drawing.png" />
+            </RadioButton>
+            <GridSplitter HorizontalAlignment="Left" Style="{StaticResource ToolBarSplitter}"/>
+            <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                          ToolTip="Изменить" 
+                          Click="Button_Click" Tag="Delete"
+                          Style="{StaticResource ToogleRadioButtonStyle}">
+                <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/minus.png" />
+            </RadioButton> 
+        </ToolBarPanel>
+        <Frame x:Name="MainFrame"  Grid.Row="1"  
+               Content="Frame" Margin="5"
+               Source="Views\PageEmployees.xaml"
+               Navigated="MainFrame_Navigated" NavigationUIVisibility="Hidden" />
+    </Grid>
 </Window>

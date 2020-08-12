@@ -4,6 +4,23 @@
              xmlns:local="clr-namespace:PersonnelOfficer"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="GroupToggleStyle" TargetType="ToggleButton">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding GroupName, RelativeSource={RelativeSource Self}}" Value="Group"/>
+                        <Condition Binding="{Binding BooleanProperty}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="IsChecked" Value="True"/>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ToogleRadioButtonStyle" TargetType="RadioButton" BasedOn="{StaticResource {x:Type ToggleButton}}"/>
+        <Style x:Key="ToolBarSplitter" TargetType="GridSplitter">
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
     </Application.Resources>
 </Application>

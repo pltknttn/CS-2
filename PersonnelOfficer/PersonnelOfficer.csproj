@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>firefighter.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -69,6 +72,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\Database.cs" />
     <Compile Include="Data\Department.cs" />
     <Compile Include="Data\Employee.cs" />
     <Compile Include="Data\Position.cs" />
@@ -77,27 +81,51 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PageDepartments.xaml">
+    <Page Include="Views\PageDepartments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PageEmployees.xaml">
+    <Page Include="Views\PageEditDepartment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PagePositions.xaml">
+    <Page Include="Views\PageEditEmployees.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PageEditPosition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PageEmployees.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PagePositions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PageDepartments.xaml.cs">
+    <Compile Include="Model\ViewModelBase.cs" />
+    <Compile Include="Model\MainWindowModel.cs" />
+    <Compile Include="Presenter\MainPresenter.cs" />
+    <Compile Include="Views\PageDepartments.xaml.cs">
       <DependentUpon>PageDepartments.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PageEmployees.xaml.cs">
+    <Compile Include="Views\PageEditDepartment.xaml.cs">
+      <DependentUpon>PageEditDepartment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PageEditEmployees.xaml.cs">
+      <DependentUpon>PageEditEmployees.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PageEditPosition.xaml.cs">
+      <DependentUpon>PageEditPosition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PageEmployees.xaml.cs">
       <DependentUpon>PageEmployees.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PagePositions.xaml.cs">
+    <Compile Include="Views\PagePositions.xaml.cs">
       <DependentUpon>PagePositions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -126,9 +154,35 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Presenter\" />
-    <Folder Include="View\" />
+    <Content Include="DB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\cancel.png" />
+    <Resource Include="Images\ok.png" />
+    <Resource Include="Images\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\employees.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\edit_property.png" />
+    <Resource Include="Images\email.png" />
+    <Resource Include="Images\home.png" />
+    <Resource Include="Images\people.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\permanent_job.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\post_office.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="firefighter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\minus.png" />
+    <Resource Include="Images\pencil_drawing.png" />
+    <Resource Include="Images\plus.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
