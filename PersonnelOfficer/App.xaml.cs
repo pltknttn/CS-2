@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 namespace PersonnelOfficer
-{
-     
+{ 
     public partial class App : Application
     {
         public static string AppDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
