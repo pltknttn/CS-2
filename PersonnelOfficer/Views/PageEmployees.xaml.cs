@@ -22,7 +22,7 @@ namespace PersonnelOfficer.Views
         public PageEmployees()
         {
             InitializeComponent();
-            this.DataContext = Application.Current.MainWindow.DataContext;
+            this.DataContext = Application.Current.MainWindow.DataContext; 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

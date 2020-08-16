@@ -22,17 +22,17 @@
                 <Label Content="Название" Width="100"/>
                 <TextBox MinWidth="380" Text="{Binding EditedDepartment.Name, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Вн.телефон" Width="100"/>
                 <TextBox MinWidth="380" Text="{Binding EditedDepartment.Telephone, Mode=TwoWay}"></TextBox>
             </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Адрес" Width="100"/>
-                <TextBox MinWidth="380" Text="{Binding EditedDepartment.Address, Mode=TwoWay}"></TextBox>
+                <TextBox MinWidth="380" Text="{Binding EditedDepartment.Address, Mode=TwoWay}" TextWrapping="Wrap" Height="50"></TextBox>
             </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Номер комнаты" Width="100"/>
                 <TextBox MinWidth="380" Text="{Binding EditedDepartment.RommNumber, Mode=TwoWay}"></TextBox>
@@ -45,7 +45,7 @@
                     <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/cancel.png" Stretch="Uniform"/>
                 </StackPanel>
             </Button>
-            <GridSplitter Width="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <Button MinWidth="100" Click="ButtonOk_Click">
                 <StackPanel Orientation="Horizontal" >
                     <Label Padding="5,5,10,5">Сохранить</Label>

@@ -9,9 +9,16 @@ namespace PersonnelOfficer.Data
     public sealed class Position: ICloneable
     {
         public int Id { get; set; }
+        /// <summary>Должность</summary>
         public string Name { get; set; }
-        public double SalaryFrom { get; set; }
-        public double SalaryTo { get; set; }
+        /// <summary>Оклад (от)</summary>
+        public double SalaryFrom { get; set; } = 0.0D;
+        /// <summary>Оклад (до)</summary>
+        public double SalaryTo { get; set; } = 0.0D;
+        /// <summary>Отдел</summary>
+        public int DepartmentId { get; set; }
+        /// <summary>Последнее состояние</summary>
+        public EditState LastEditState { get; set; } = EditState.Insert;
 
         public object Clone()
         {

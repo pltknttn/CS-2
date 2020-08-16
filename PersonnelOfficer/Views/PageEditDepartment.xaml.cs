@@ -25,7 +25,11 @@ namespace PersonnelOfficer.Views
         {
             InitializeComponent();
             this.DataContext = Application.Current.MainWindow.DataContext;
+            if (CurrentModel?.EditedDepartment?.LastEditState == Data.EditState.Insert)
+                this.Title = $"Отделы.Добавление";
         }
+
+        private MainWindowModel CurrentModel => this.DataContext as MainWindowModel;
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

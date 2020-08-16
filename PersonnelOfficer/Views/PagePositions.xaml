@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PersonnelOfficer"
-      xmlns:model="clr-namespace:PersonnelOfficer.Model"
+      xmlns:model="clr-namespace:PersonnelOfficer.Model" xmlns:control="clr-namespace:PersonnelOfficer.Control"
       mc:Ignorable="d"
       Title="Должности" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -15,13 +15,26 @@
     <Grid>
         <Border BorderBrush="Beige" BorderThickness="2">
             <ListView x:Name="dgPositions"
-                      ItemsSource="{Binding Positions, Mode=TwoWay}" SelectedItem="{Binding CurrentPosition}">
+                      ItemsSource="{Binding Positions, Mode=TwoWay}" 
+                      SelectedItem="{Binding CurrentPosition}"
+                      ItemContainerStyle="{StaticResource ListViewHorisontalAndVerticalLinesStyle}" > 
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Width="50">Ид</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Width="200">Должность</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=SalaryFrom}" Width="150">Оклад от</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=SalaryFrom}" Width="150">Оклад до</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Width="250">Должность</GridViewColumn>
+                        <GridViewColumn Header="Отдел" Width="150">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox IsEditable="False" IsEnabled="False" Width="{Binding}" SelectedValue="{Binding Path=DepartmentId}" 
+                                              SelectedValuePath="Id" DisplayMemberPath="Name"
+                                              ItemsSource="{Binding ElementName=dgPositions,  Path=DataContext.Departments}"
+                                              Background="Transparent"> 
+                                    </ComboBox>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=SalaryFrom, StringFormat=\{0:N2\}}" Width="150">Оклад от</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=SalaryTo, StringFormat=\{0:N2\}}" Width="150">Оклад до</GridViewColumn> 
                     </GridView>
                 </ListView.View>
             </ListView>

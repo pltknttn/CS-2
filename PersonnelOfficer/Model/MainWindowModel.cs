@@ -64,24 +64,34 @@ namespace PersonnelOfficer.Model
             OnPropertyChanged("Positions");
         }
 
+        private bool _isCancelEdit = true;
+        public bool IsCancelEdit
+        {
+            get { return _isCancelEdit; }
+            set { _isCancelEdit = value; OnPropertyChanged("IsCancelEdit"); }
+        }
+
         public void CancelEdit()
         {
             FillEmployees();
             FillDepartments();
             FillPositions();
             View.MainFrame.GoBack();
+            IsCancelEdit = true; 
         }
-
+                
         public Position EditedPosition { get; set; }
 
         public void SaveEditPosition()
         {
-            mainPresenter.SavePosition(EditedPosition);
+            if(!mainPresenter.SavePosition(EditedPosition, out var changeEmployees)) return;
             Positions.Add(mainPresenter.GetPositions().Last());
             View.MainFrame.GoBack();
             OnPropertyChanged("Positions");
             CurrentPosition = Positions.Last();
             OnPropertyChanged("CurrentPosition");
+            if(changeEmployees) FillEmployees();
+            IsCancelEdit = true;
         }
                 
         public void EditPosition(EditState editState)
@@ -92,7 +102,7 @@ namespace PersonnelOfficer.Model
             }
             else if (editState == EditState.Delete && CurrentPosition != null)
             {
-                mainPresenter.DeletePosition(CurrentPosition);
+                if(!mainPresenter.DeletePosition(CurrentPosition)) return;
                 Positions.Remove(CurrentPosition);
                 OnPropertyChanged("Positions");                
                 if (Positions.Any()) CurrentPosition = Positions.Last();
@@ -103,7 +113,9 @@ namespace PersonnelOfficer.Model
             if (CurrentPosition != null)
             {
                 EditedPosition = CurrentPosition.Clone() as Position;
-                View.MainFrame.Navigate(UriEditPosition); 
+                EditedPosition.LastEditState = editState;
+                View.MainFrame.Navigate(UriEditPosition);
+                IsCancelEdit = false;
             }
         }
 
@@ -111,12 +123,13 @@ namespace PersonnelOfficer.Model
 
         public void SaveEditDepartment()
         {
-            mainPresenter.SaveDepartment(EditedDepartment);
+            if(!mainPresenter.SaveDepartment(EditedDepartment)) return;
             Departments.Add(mainPresenter.GetDepartments().Last());
             View.MainFrame.GoBack();
             OnPropertyChanged("Departments");
             CurrentDepartment = Departments.Last();
             OnPropertyChanged("CurrentDepartment");
+            IsCancelEdit = true;
         }
 
         public void EditDepartment(EditState editState)
@@ -127,17 +140,20 @@ namespace PersonnelOfficer.Model
             }
             else if (editState == EditState.Delete && CurrentDepartment != null)
             {                
-                mainPresenter.DeleteDepartment(CurrentDepartment);
+                if(!mainPresenter.DeleteDepartment(CurrentDepartment, out var changePositions)) return;
                 Departments.Remove(CurrentDepartment);
                 OnPropertyChanged("Departments");
                 if (Departments.Any()) CurrentDepartment = Departments.Last();
+                if (changePositions) FillPositions();
                 return;
             }
 
             if (CurrentDepartment != null)
             {
                 EditedDepartment = CurrentDepartment.Clone() as Department;
-                View.MainFrame.Navigate(UriEditDepartment); 
+                EditedDepartment.LastEditState = editState;
+                View.MainFrame.Navigate(UriEditDepartment);
+                IsCancelEdit = false;
             }
         }
 
@@ -145,12 +161,13 @@ namespace PersonnelOfficer.Model
 
         public void SaveEditEmployee()
         {
-            mainPresenter.SaveEmployee(EditedEmployee);
+            if(!mainPresenter.SaveEmployee(EditedEmployee)) return;
             Employees.Add(mainPresenter.GetEmployees().Last());
             OnPropertyChanged("Employees");
             CurrentEmployee = Employees.Last();
             OnPropertyChanged("CurrentEmployee");
             View.MainFrame.GoBack();
+            IsCancelEdit = true;
         }
 
         public void EditEmployee(EditState editState)
@@ -161,7 +178,7 @@ namespace PersonnelOfficer.Model
             }
             else if (editState == EditState.Delete && CurrentEmployee != null)
             {
-                mainPresenter.DeleteEmployee(CurrentEmployee);
+                if(!mainPresenter.DeleteEmployee(CurrentEmployee)) return;
                 Employees.Remove(CurrentEmployee);
                 OnPropertyChanged("Employees");
                 if (Employees.Any()) CurrentEmployee = Employees.Last();
@@ -171,7 +188,9 @@ namespace PersonnelOfficer.Model
             if (CurrentEmployee != null)
             {
                 EditedEmployee = CurrentEmployee.Clone() as Employee;
+                EditedEmployee.LastEditState = editState;
                 View.MainFrame.Navigate(UriEditEmployee);
+                IsCancelEdit = false;
             }
         }
     }

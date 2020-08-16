@@ -29,5 +29,7 @@ namespace PersonnelOfficer.Views
         {
             (this.DataContext as MainWindowModel)?.Init();
         }
+
+
     }
 }

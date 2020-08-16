@@ -2,11 +2,26 @@
 <Database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Employees>
     <Employee>
+      <Id>3</Id>
+      <FirstName>Ирина</FirstName>
+      <Patronymic>Анатольевна</Patronymic>
+      <Surname>Люсина</Surname>
+      <Salary>80000</Salary>
+      <DateOfBirth>1999-08-31T00:00:00</DateOfBirth>
+      <Sex>Female</Sex>
+      <Married>false</Married>
+      <PositionId>3</PositionId>
+      <DepartmentId>1</DepartmentId>
+    </Employee>
+    <Employee>
       <Id>2</Id>
       <FirstName>Василий</FirstName>
       <Patronymic>Геннадьевич</Patronymic>
       <Surname>Петров</Surname>
       <Salary>30000</Salary>
+      <DateOfBirth>1998-09-10T00:00:00</DateOfBirth>
+      <Sex>Man</Sex>
+      <Married>true</Married>
       <PositionId>1</PositionId>
       <DepartmentId>1</DepartmentId>
     </Employee>
@@ -15,81 +30,90 @@
       <FirstName>Елена</FirstName>
       <Patronymic>Ивановна</Patronymic>
       <Surname>Васильева</Surname>
+      <Title>Елена Ивановна</Title>
       <Salary>60000</Salary>
+      <DateOfBirth>1999-05-03T00:00:00</DateOfBirth>
+      <Sex>Female</Sex>
+      <Married>true</Married>
       <PositionId>2</PositionId>
       <DepartmentId>4</DepartmentId>
-    </Employee>
-    <Employee>
-      <Id>3</Id>
-      <FirstName>Ирина</FirstName>
-      <Patronymic>Анатольевна</Patronymic>
-      <Surname>Люсина</Surname>
-      <Salary>80000</Salary>
-      <PositionId>3</PositionId>
-      <DepartmentId>1</DepartmentId>
     </Employee>
   </Employees>
   <Departments>
     <Department>
-      <Id>1</Id>
-      <Name>Отдел склада</Name>
-      <Telephone>890</Telephone>
-    </Department>
-    <Department>
-      <Id>2</Id>
-      <Name>ИТ</Name>
-    </Department>
-    <Department>
       <Id>4</Id>
       <Name>Бухгалтерия</Name>
+      <Telephone>78</Telephone>
+      <RommNumber>34</RommNumber>
     </Department>
     <Department>
       <Id>3</Id>
       <Name>Отдел кадров</Name>
+      <Telephone>56</Telephone>
+      <RommNumber>7</RommNumber>
+    </Department>
+    <Department>
+      <Id>2</Id>
+      <Name>ИТ</Name>
+      <Telephone>55</Telephone>
+      <RommNumber>90</RommNumber>
+    </Department>
+    <Department>
+      <Id>1</Id>
+      <Name>Отдел склада</Name>
+      <Telephone>890</Telephone>
+      <RommNumber />
     </Department>
   </Departments>
   <Positions>
-    <Position>
-      <Id>6</Id>
-      <Name>Упакощик</Name>
-      <SalaryFrom>30000</SalaryFrom>
-      <SalaryTo>0</SalaryTo>
-    </Position>
-    <Position>
-      <Id>1</Id>
-      <Name>Кладовщик</Name>
-      <SalaryFrom>20000</SalaryFrom>
-      <SalaryTo>60000</SalaryTo>
-    </Position>
-    <Position>
-      <Id>2</Id>
-      <Name>Бухгалтер</Name>
-      <SalaryFrom>50000</SalaryFrom>
-      <SalaryTo>0</SalaryTo>
-    </Position>
     <Position>
       <Id>3</Id>
       <Name>Директор</Name>
       <SalaryFrom>50000</SalaryFrom>
       <SalaryTo>10000</SalaryTo>
-    </Position>
-    <Position>
-      <Id>5</Id>
-      <Name>Сборщик</Name>
-      <SalaryFrom>20000</SalaryFrom>
-      <SalaryTo>0</SalaryTo>
-    </Position>
-    <Position>
-      <Id>8</Id>
-      <Name>Кадровик</Name>
-      <SalaryFrom>20000</SalaryFrom>
-      <SalaryTo>20000</SalaryTo>
+      <DepartmentId>0</DepartmentId>
     </Position>
     <Position>
       <Id>9</Id>
       <Name>Юрист</Name>
       <SalaryFrom>40000</SalaryFrom>
       <SalaryTo>80000</SalaryTo>
+      <DepartmentId>4</DepartmentId>
+    </Position>
+    <Position>
+      <Id>8</Id>
+      <Name>Кадровик</Name>
+      <SalaryFrom>20000</SalaryFrom>
+      <SalaryTo>20000</SalaryTo>
+      <DepartmentId>3</DepartmentId>
+    </Position>
+    <Position>
+      <Id>1</Id>
+      <Name>Кладовщик</Name>
+      <SalaryFrom>20000</SalaryFrom>
+      <SalaryTo>60000</SalaryTo>
+      <DepartmentId>1</DepartmentId>
+    </Position>
+    <Position>
+      <Id>6</Id>
+      <Name>Упакощик</Name>
+      <SalaryFrom>30000</SalaryFrom>
+      <SalaryTo>30000</SalaryTo>
+      <DepartmentId>1</DepartmentId>
+    </Position>
+    <Position>
+      <Id>5</Id>
+      <Name>Сборщик</Name>
+      <SalaryFrom>20000</SalaryFrom>
+      <SalaryTo>20000</SalaryTo>
+      <DepartmentId>1</DepartmentId>
+    </Position>
+    <Position>
+      <Id>2</Id>
+      <Name>Бухгалтер</Name>
+      <SalaryFrom>50000</SalaryFrom>
+      <SalaryTo>50000</SalaryTo>
+      <DepartmentId>4</DepartmentId>
     </Position>
   </Positions>
 </Database>

@@ -15,7 +15,8 @@
     <Grid>
         <Border BorderBrush="Beige" BorderThickness="2">
             <ListView x:Name="dgDepartments"  
-                  ItemsSource="{Binding Departments}" SelectedItem="{Binding CurrentDepartment}">
+                  ItemsSource="{Binding Departments}" SelectedItem="{Binding CurrentDepartment}"
+                  ItemContainerStyle="{StaticResource ListViewHorisontalAndVerticalLinesStyle}" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Width="50">Ид</GridViewColumn>

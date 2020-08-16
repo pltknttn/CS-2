@@ -56,6 +56,26 @@ namespace PersonnelOfficer.Presenter
                 ShowMessageError("Заполните данные!");
                 return false;
             }
+            if (string.IsNullOrWhiteSpace(employee.FirstName?.Trim()))
+            {
+                ShowMessageError("Заполните имя!");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(employee.Surname?.Trim()))
+            {
+                ShowMessageError("Заполните фамилию!");
+                return false;
+            }
+            if (!(_database.Departments?.Any(x => x.Id == employee.DepartmentId) ?? false))
+            {
+                ShowMessageError("Выберите отдел!");
+                return false;
+            }
+            if (!(_database.Positions?.Any(x => x.Id == employee.PositionId) ?? false))
+            {
+                ShowMessageError("Выберите должность!");
+                return false;
+            }
             if (_database.Employees != null && !_database.Employees.Exists(x=>x.Id == employee.Id))
                 employee.Id = _database.NextEmployeId;
 
@@ -76,6 +96,7 @@ namespace PersonnelOfficer.Presenter
                 ShowMessageError("Заполните данные!");
                 return false;
             }
+            if (_database.Employees != null && !_database.Employees.Exists(x => x.Id == employee.Id)) return true;
 
             _database.Employees.RemoveAll(x => x.Id == employee.Id);
             return SaveDB();
@@ -94,6 +115,11 @@ namespace PersonnelOfficer.Presenter
                 ShowMessageError("Заполните данные!");
                 return false;
             }
+            if (string.IsNullOrWhiteSpace(department.Name?.Trim()))
+            {
+                ShowMessageError("Заполните название отдела!");
+                return false;
+            }
             if (_database.Departments != null && !_database.Departments.Exists(x => x.Id == department.Id))
                 department.Id = _database.NextDepartmentId;
 
@@ -103,8 +129,9 @@ namespace PersonnelOfficer.Presenter
             return SaveDB();
         }
 
-        public bool DeleteDepartment(Department department)
+        public bool DeleteDepartment(Department department, out bool changePositions)
         {
+            changePositions = false;
             if (_database.Departments == null)
             {
                 LoadDB();
@@ -114,18 +141,26 @@ namespace PersonnelOfficer.Presenter
                 ShowMessageError("Заполните данные!");
                 return false;
             }
-            if (_database.Departments != null && !_database.Departments.Exists(x => x.Id == department.Id))
-                department.Id = _database.NextDepartmentId;
+            if (_database.Departments != null && !_database.Departments.Exists(x => x.Id == department.Id)) return true;
 
-            _database.Departments.RemoveAll(x => x.Id == department.Id); 
+            if (_database.Employees?.Any(x=>x.DepartmentId == department.Id) == true)
+            {
+                ShowMessageError("Переведите сострудников в другой отдел!");
+                return false;
+            }
+            changePositions = _database.Positions?.Any(x => x.DepartmentId == department.Id) == true;
+            _database.Departments.RemoveAll(x => x.Id == department.Id);
+            _database.Positions?.RemoveAll(x => x.DepartmentId == department.Id);
 
             return SaveDB();
         }
 
         public int NextDepartmentId => _database.NextDepartmentId;
 
-        public bool SavePosition(Position position)
+        public bool SavePosition(Position position, out bool changeEmployees)
         {
+            changeEmployees = false;
+
             if (_database.Positions == null)
             {
                 LoadDB();
@@ -135,12 +170,26 @@ namespace PersonnelOfficer.Presenter
                 ShowMessageError("Заполните данные!");
                 return false;
             }
+            if (string.IsNullOrWhiteSpace(position.Name?.Trim()))
+            {
+                ShowMessageError("Заполните название должности!");
+                return false;
+            }
+            if (!(_database.Departments?.Any(x=>x.Id == position.DepartmentId)??false))
+            {
+                ShowMessageError("Выберите отдел!");
+                return false;
+            }
             if (_database.Positions != null && !_database.Positions.Exists(x => x.Id == position.Id))
                 position.Id = _database.NextPositionId;
 
             _database.Positions.RemoveAll(x => x.Id == position.Id);
             _database.Positions.Add(position);
 
+            changeEmployees = _database.Employees?.Any(x => x.PositionId == position.Id && x.DepartmentId != position.DepartmentId) == true;
+            _database.Employees?
+                .FindAll(x => x.PositionId == position.Id && x.DepartmentId != position.DepartmentId)?
+                .ForEach(x => x.DepartmentId = position.DepartmentId); 
             return SaveDB();
         }
 
@@ -155,10 +204,15 @@ namespace PersonnelOfficer.Presenter
                 ShowMessageError("Заполните данные!");
                 return false;
             }
-            if (_database.Positions != null && !_database.Positions.Exists(x => x.Id == position.Id))
-                position.Id = _database.NextPositionId;
+            if (_database.Positions != null && !_database.Positions.Exists(x => x.Id == position.Id)) return true;
 
-            _database.Positions.RemoveAll(x => x.Id == position.Id); 
+            if (_database.Employees?.Any(x => x.PositionId == position.Id) == true)
+            {
+                ShowMessageError("Переведите сострудников на другую должность!");
+                return false;
+            }
+                       
+            _database.Positions?.RemoveAll(x => x.Id == position.Id); 
 
             return SaveDB();
         }

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PersonnelOfficer.Views"
       xmlns:model="clr-namespace:PersonnelOfficer.Model"
+      xmlns:data="clr-namespace:PersonnelOfficer.Data"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       MaxWidth="500"
@@ -12,6 +13,9 @@
       d:DataContext="{d:DesignInstance Type={x:Type model:MainWindowModel}}"
       Loaded="Page_Loaded">
 
+    <Page.Resources>
+        <data:SexEnumToCollectionConverter x:Key="SexEnumToCollectionConverter" />
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,47 +24,102 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="10,10,0,0">
             <StackPanel Orientation="Horizontal">
+                <Label Content="Фамилия" Width="100"/>
+                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Surname}"></TextBox>
+            </StackPanel>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
+            <StackPanel Orientation="Horizontal">
                 <Label Content="Имя" Width="100"/>
                 <TextBox MinWidth="380" Text="{Binding EditedEmployee.FirstName}"></TextBox>
             </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Отчество" Width="100"/>
                 <TextBox MinWidth="380" Text="{Binding EditedEmployee.Patronymic}"></TextBox>
             </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
-                <Label Content="Фамилия" Width="100"/>
-                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Surname}"></TextBox>
-            </StackPanel> 
-            <GridSplitter Height="10" Background="Transparent"/>
+                <Label Content="Обращение" Width="100"/>
+                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Title}"/>
+            </StackPanel>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Дата рождения" Width="100"/>
+                <DatePicker MinWidth="380" 
+                            SelectedDateFormat="Short"  
+                            SelectedDate="{Binding EditedEmployee.DateOfBirth, StringFormat=\{0:dd.MM.yyyy\}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
+            </StackPanel>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>            
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Пол" Width="100"/>
+                <!--<ComboBox MinWidth="90" ItemsSource="{Binding Source={StaticResource SexEnum}}"  SelectedItem="{Binding EditedEmployee.Sex}"/>-->
+                <ComboBox x:Name="cbSexEnum" MinWidth="90" ItemsSource="{Binding Source={StaticResource SexEnum}, Converter={StaticResource SexEnumToCollectionConverter}}"  
+                          SelectedValue="{Binding EditedEmployee.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Value"
+                          DisplayMemberPath="Description"  
+                          Loaded="ComboBox_Loaded"
+                          > 
+                </ComboBox>
+                <CheckBox  HorizontalContentAlignment="Center"  Margin="15,5,5,5" IsChecked="{Binding EditedEmployee.Married}">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="Content" Value="Замужем"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Text, ElementName=cbSexEnum}" Value="М">
+                                    <Setter Property="Content" Value="Женат"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
+            </StackPanel>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Адрес" Width="100"/>
                 <TextBox MinWidth="380" Text="{Binding EditedEmployee.Address}" TextWrapping="Wrap" Height="50"></TextBox>
-            </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+            </StackPanel> 
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
-                <Label Content="Моб.телефон" Width="100"/>
-                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Telephone}"></TextBox>
-            </StackPanel>            
-            <GridSplitter Height="10" Background="Transparent"/>
+                <Label Content="Моб. телефон" Width="100"/>
+                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Mobilephone}" PreviewTextInput="TextBoxMobilephone_PreviewTextInput"></TextBox>
+            </StackPanel>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Электр. адрес" Width="100"/>
+                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Email}"></TextBox>
+            </StackPanel>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Оклад" Width="100"/>
+                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Salary, StringFormat=\{0:N2\}}" 
+                         PreviewTextInput="TextBox_PreviewTextInput" 
+                         TextAlignment="Right"></TextBox>
+            </StackPanel>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Отдел" Width="100"/>
                 <ComboBox Name="cbDepartment" MinWidth="380" ItemsSource="{Binding Departments}" 
                           SelectedValuePath="Id" DisplayMemberPath="Name"
-                          SelectedValue="{Binding Path=EditedEmployee.DepartmentId}"></ComboBox>
+                          SelectedValue="{Binding EditedEmployee.DepartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboBoxValidationStyle}" 
+                          Loaded="ComboBox_Loaded">                    
+                </ComboBox>
             </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Должность" Width="100"/>
                 <ComboBox Name="cbPosition" MinWidth="380" ItemsSource="{Binding Positions}" 
                           SelectedValuePath="Id" DisplayMemberPath="Name"
-                          SelectedValue="{Binding Path=EditedEmployee.PositionId}" ></ComboBox>
-            </StackPanel>
-            <GridSplitter Height="10" Background="Transparent"/>
+                          SelectedValue="{Binding EditedEmployee.PositionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboBoxValidationStyle}"
+                          Loaded="ComboBox_Loaded">
+                </ComboBox>
+            </StackPanel> 
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
-                <Label Content="Оклад" Width="100"/>
-                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Salary}"></TextBox>
+                <Label Content="Вн.телефон" Width="100"/>
+                <TextBox MinWidth="380" Text="{Binding EditedEmployee.Telephone}" PreviewTextInput="TextBoxTelephone_PreviewTextInput"></TextBox>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10" FlowDirection="RightToLeft">
@@ -70,7 +129,7 @@
                     <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/cancel.png" Stretch="Uniform"/>
                 </StackPanel>
             </Button>
-            <GridSplitter Width="10" Background="Transparent"/>
+            <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <Button MinWidth="100" Click="ButtonOk_Click">
                 <StackPanel Orientation="Horizontal" >
                     <Label Padding="5,5,10,5">Сохранить</Label>
