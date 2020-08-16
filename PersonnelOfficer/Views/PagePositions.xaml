@@ -25,7 +25,7 @@
                         <GridViewColumn Header="Отдел" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ComboBox IsEditable="False" IsEnabled="False" Width="{Binding}" SelectedValue="{Binding Path=DepartmentId}" 
+                                    <ComboBox IsEditable="False" IsEnabled="False" SelectedValue="{Binding Path=DepartmentId}" 
                                               SelectedValuePath="Id" DisplayMemberPath="Name"
                                               ItemsSource="{Binding ElementName=dgPositions,  Path=DataContext.Departments}"
                                               Background="Transparent"> 

@@ -18,7 +18,9 @@
 
     <Grid>
         <Border BorderBrush="Beige" BorderThickness="2">
-            <ListView x:Name="dgEmployees" ItemsSource="{Binding Employees}" SelectedItem="{Binding CurrentEmployee}" 
+            <ListView x:Name="dgEmployees" 
+                      ItemsSource="{Binding Employees}" 
+                      SelectedItem="{Binding CurrentEmployee}" 
                       ItemContainerStyle="{StaticResource ListViewHorisontalAndVerticalLinesStyle}" >
                 <ListView.View>
                     <GridView>
@@ -28,10 +30,10 @@
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Patronymic}" Width="100">Отчество</GridViewColumn> 
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Title}"  Width="150">Обращение</GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=DateOfBirth, StringFormat=\{0:dd.MM.yyyy\}}"  Width="100">Дата рождения</GridViewColumn>
-                        <GridViewColumn Header="Пол" Width="150">
+                        <GridViewColumn Header="Пол" Width="50">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ComboBox  IsEditable="False" IsEnabled="False" Width="{Binding}" 
+                                    <ComboBox  IsEditable="False" IsEnabled="False"
                                           ItemsSource="{Binding Source={StaticResource SexEnum}, Converter={StaticResource SexEnumToCollectionConverter}}"  
                                           SelectedValue="{Binding Sex, Mode=TwoWay}"
                                           SelectedValuePath="Value"
@@ -51,19 +53,21 @@
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Mobilephone}" Width="150">Мобильный телефон</GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Email}" Width="150">Электронный адрес</GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Salary, StringFormat=\{0:N2\}}" Width="150">Оклад</GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Email}" Width="100">Почта</GridViewColumn> 
-                        <GridViewColumn Header="Отдел"> 
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Email}" Width="100">Почта</GridViewColumn>
+                        <GridViewColumn Header="Отдел" Width="150"> 
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ComboBox IsEditable="False" IsEnabled="False" Width="{Binding}" SelectedValue="{Binding Path=DepartmentId}" SelectedValuePath="Id" DisplayMemberPath="Name"
-                                              ItemsSource="{Binding ElementName=dgEmployees,  Path=DataContext.Departments}"  />
+                                    <ComboBox IsEditable="False" IsEnabled="False" SelectedValue="{Binding Path=DepartmentId}" 
+                                              SelectedValuePath="Id" DisplayMemberPath="Name"
+                                              ItemsSource="{Binding ElementName=dgEmployees,  Path=DataContext.Departments}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate> 
                         </GridViewColumn>
                         <GridViewColumn Header="Должность" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ComboBox  IsEditable="False" IsEnabled="False" Width="{Binding}" SelectedValue="{Binding Path=PositionId}" SelectedValuePath="Id" DisplayMemberPath="Name"
+                                    <ComboBox  IsEditable="False" IsEnabled="False" SelectedValue="{Binding Path=PositionId}" 
+                                               SelectedValuePath="Id" DisplayMemberPath="Name"
                                                ItemsSource="{Binding ElementName=dgEmployees,  Path=DataContext.Positions}"  />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
