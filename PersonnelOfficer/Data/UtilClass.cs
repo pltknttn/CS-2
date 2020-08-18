@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -15,6 +17,13 @@ namespace PersonnelOfficer.Data
 {
     public static class UtilClass 
     {
+        public static Uri UriEmployees = new Uri("pack://application:,,,/Views/PageEmployees.xaml");
+        public static Uri UriDepartments = new Uri("pack://application:,,,/Views/PageDepartments.xaml");
+        public static Uri UriPositions = new Uri("pack://application:,,,/Views/PagePositions.xaml");
+        public static Uri UriEditPosition = new Uri("pack://application:,,,/Views/PageEditPosition.xaml");
+        public static Uri UriEditDepartment = new Uri("pack://application:,,,/Views/PageEditDepartment.xaml");
+        public static Uri UriEditEmployee = new Uri("pack://application:,,,/Views/PageEditEmployees.xaml");
+
         public static string Description(this Enum value)
         {
             var attributes = value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
@@ -196,6 +205,48 @@ namespace PersonnelOfficer.Data
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             return this;
+        }
+    }
+
+    public class PositionFilterCollectionConverter : IMultiValueConverter
+    {
+        public object Convert( object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length == 0) return null;
+
+            if (values[0] is ObservableCollection<Position> collections)
+            {
+                if (int.TryParse(values[1]?.ToString(), out var depId))
+                {
+                    return collections.Where(x => x.DepartmentId == depId);
+                }
+            } 
+
+            return values[0];
+        }
+
+        public object[] ConvertBack( object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        { 
+            return null;
+        } 
+    }
+
+    public class SelectedPositionCollectionConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length == 0) return null;
+
+            if (values[0] is int positionId && values[1] is Collection<Position> collections)
+            { 
+                 return collections.FirstOrDefault(x => x.Id == positionId);
+            }
+
+            return values[0];
+        }
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            return new [] { value };
         }
     }
 }

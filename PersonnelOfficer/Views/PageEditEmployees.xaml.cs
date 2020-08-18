@@ -34,33 +34,26 @@ namespace PersonnelOfficer.Views
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as MainWindowModel)?.Init();
+            CurrentModel?.Init();
         }
 
         private void ButtonOk_Click(object sender, RoutedEventArgs e)
         {
-            if ((this.DataContext as MainWindowModel)?.EditedEmployee == null) return;
-            (this.DataContext as MainWindowModel).SaveEditEmployee();
+            if (CurrentModel?.EditedEmployee == null) return;
+            CurrentModel.SaveEditEmployee();
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as MainWindowModel)?.CancelEdit();
+            CurrentModel?.CancelEdit();
         }
 
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             ComboBox comboBox = (ComboBox)e.OriginalSource;
-
             BindingOperations.GetBindingExpression(comboBox, ComboBox.SelectedValueProperty)?.UpdateTarget();
         }
-
-        private void DatePicker_Loaded(object sender, RoutedEventArgs e)
-        {
-            DatePicker datePicker = (DatePicker)e.OriginalSource;
-            BindingOperations.GetBindingExpression(datePicker, DatePicker.SelectedDateProperty)?.UpdateTarget();
-        }
-
+         
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
@@ -74,6 +67,12 @@ namespace PersonnelOfficer.Views
         private void TextBoxMobilephone_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^0-9+]+").IsMatch(e.Text);
+        }
+
+        private void cbDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            BindingOperations.GetBindingExpression(cbPosition, ComboBox.ItemsSourceProperty)?.UpdateTarget();
+            BindingOperations.GetBindingExpression(cbPosition, ComboBox.SelectedValueProperty)?.UpdateTarget();
         }
     }
 }

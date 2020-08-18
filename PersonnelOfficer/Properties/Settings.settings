@@ -5,5 +5,8 @@
     <Setting Name="DbFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">DB.xml</Value>
     </Setting>
+    <Setting Name="MsSqlDdName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WAREHOUS</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

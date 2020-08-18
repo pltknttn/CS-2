@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
@@ -159,6 +160,8 @@
     <Content Include="DB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\updates.png" />
+    <Content Include="script.sql" />
     <Resource Include="Images\back_to.png" />
     <Resource Include="Images\menu.png" />
     <Resource Include="Images\next_page.png" />

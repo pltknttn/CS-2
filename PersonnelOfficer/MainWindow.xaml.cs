@@ -1,4 +1,5 @@
-﻿using PersonnelOfficer.Model;
+﻿using PersonnelOfficer.Data;
+using PersonnelOfficer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,40 +41,43 @@ namespace PersonnelOfficer
             switch ((string)button.Tag)
             {
                 case "Employees":
-                    MainFrame.Navigate(MainWindowModel.UriEmployees);
+                    MainFrame.Navigate(UtilClass.UriEmployees);
                     break;
                 case "Departments":
-                    MainFrame.Navigate(MainWindowModel.UriDepartments);
+                    MainFrame.Navigate(UtilClass.UriDepartments);
                     break;
                 case "Positions":
-                    MainFrame.Navigate(MainWindowModel.UriPositions);
+                    MainFrame.Navigate(UtilClass.UriPositions);
                     break; 
-                case "Add" when CurrentUri.OriginalString.Contains(MainWindowModel.UriEmployees.Segments.Last()):
+                case "Add" when CurrentUri.OriginalString.Contains(UtilClass.UriEmployees.Segments.Last()):
                     Model.EditEmployee(Data.EditState.Insert);
                     break;
-                case "Edit" when CurrentUri.OriginalString.Contains(MainWindowModel.UriEmployees.Segments.Last()):
+                case "Edit" when CurrentUri.OriginalString.Contains(UtilClass.UriEmployees.Segments.Last()):
                     Model.EditEmployee(Data.EditState.Edit);
                     break;
-                case "Delete" when CurrentUri.OriginalString.Contains(MainWindowModel.UriEmployees.Segments.Last()):
+                case "Delete" when CurrentUri.OriginalString.Contains(UtilClass.UriEmployees.Segments.Last()):
                     Model.EditEmployee(Data.EditState.Delete);
                     break;
-                case "Add" when CurrentUri.OriginalString.Contains(MainWindowModel.UriDepartments.Segments.Last()):
+                case "Add" when CurrentUri.OriginalString.Contains(UtilClass.UriDepartments.Segments.Last()):
                     Model.EditDepartment(Data.EditState.Insert);
                     break;
-                case "Edit" when CurrentUri.OriginalString.Contains(MainWindowModel.UriDepartments.Segments.Last()):
+                case "Edit" when CurrentUri.OriginalString.Contains(UtilClass.UriDepartments.Segments.Last()):
                     Model.EditDepartment(Data.EditState.Edit);
                     break;
-                case "Delete" when CurrentUri.OriginalString.Contains(MainWindowModel.UriDepartments.Segments.Last()):
+                case "Delete" when CurrentUri.OriginalString.Contains(UtilClass.UriDepartments.Segments.Last()):
                     Model.EditDepartment(Data.EditState.Delete);
                     break;
-                case "Add" when CurrentUri.OriginalString.Contains(MainWindowModel.UriPositions.Segments.Last()):
+                case "Add" when CurrentUri.OriginalString.Contains(UtilClass.UriPositions.Segments.Last()):
                     Model.EditPosition(Data.EditState.Insert);
                     break;
-                case "Edit" when CurrentUri.OriginalString.Contains(MainWindowModel.UriPositions.Segments.Last()):
+                case "Edit" when CurrentUri.OriginalString.Contains(UtilClass.UriPositions.Segments.Last()):
                     Model.EditPosition(Data.EditState.Edit);
                     break;
-                case "Delete" when CurrentUri.OriginalString.Contains(MainWindowModel.UriPositions.Segments.Last()):
+                case "Delete" when CurrentUri.OriginalString.Contains(UtilClass.UriPositions.Segments.Last()):
                     Model.EditPosition(Data.EditState.Delete);
+                    break;
+                case "Update":
+                    Model.Fill(CurrentPageName);
                     break;
                 default:
                     break;
@@ -82,12 +86,16 @@ namespace PersonnelOfficer
 
         private Page CurrentPage;
         private Uri CurrentUri;
+        private string CurrentPageName = string.Empty;
+       
         private void MainFrame_Navigated(object sender, NavigationEventArgs e)
         {
-           CurrentUri = e.Uri;
+           CurrentPageName = e.Content.GetType().Name ?? string.Empty; 
+           CurrentUri  = e.Uri;
            CurrentPage = e.Content as Page;
+           
            TextInfo.Text = CurrentPage?.Title;
-           TextInfo.Tag = CurrentPage?.Name;
+           TextInfo.Tag = CurrentPageName;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

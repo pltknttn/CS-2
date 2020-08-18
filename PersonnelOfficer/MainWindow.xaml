@@ -65,17 +65,24 @@
                     </RadioButton>
                     <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
                     <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
-                          ToolTip="Удалить" 
+                          ToolTip="Изменить" 
                           Click="Button_Click" Tag="Edit"  
                           Style="{StaticResource ToogleRadioButtonStyle}">
                         <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/pencil_drawing.png" />
                     </RadioButton>
                     <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
                     <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
-                          ToolTip="Изменить" 
+                          ToolTip="Удалить" 
                           Click="Button_Click" Tag="Delete"
                           Style="{StaticResource ToogleRadioButtonStyle}">
                         <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/minus.png" />
+                    </RadioButton>
+                    <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
+                    <RadioButton HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                          ToolTip="Обновить" 
+                          Click="Button_Click" Tag="Update"
+                          Style="{StaticResource ToogleRadioButtonStyle}">
+                        <Image Source="pack://application:,,,/PersonnelOfficer;component/Images/updates.png" />
                     </RadioButton>
                 </StackPanel>
             </Expander>
@@ -83,6 +90,7 @@
         <Frame x:Name="MainFrame"  Grid.Row="1"  
                Content="Frame" Margin="5"
                Source="Views\PageEmployees.xaml"
-               Navigated="MainFrame_Navigated" NavigationUIVisibility="Hidden" />
+               Navigated="MainFrame_Navigated"  
+               NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

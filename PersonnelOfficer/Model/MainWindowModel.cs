@@ -13,21 +13,12 @@ using System.Windows;
 namespace PersonnelOfficer.Model
 {
     public sealed class MainWindowModel : ViewModelBase
-    {
-        public static Uri UriEmployees = new Uri("pack://application:,,,/Views/PageEmployees.xaml");
-        public static Uri UriDepartments = new Uri("pack://application:,,,/Views/PageDepartments.xaml");
-        public static Uri UriPositions = new Uri("pack://application:,,,/Views/PagePositions.xaml");
-        public static Uri UriEditPosition = new Uri("pack://application:,,,/Views/PageEditPosition.xaml");
-        public static Uri UriEditDepartment = new Uri("pack://application:,,,/Views/PageEditDepartment.xaml");
-        public static Uri UriEditEmployee = new Uri("pack://application:,,,/Views/PageEditEmployees.xaml");
-
+    {        
         private MainPresenter mainPresenter;
-
-        public MainWindowModel() { }
+        public MainWindowModel() { mainPresenter = MainPresenter.Instance; }
 
         public void Init()
-        {
-            mainPresenter = MainPresenter.Instance;
+        {           
             FillEmployees();
             FillDepartments();
             FillPositions();
@@ -41,28 +32,48 @@ namespace PersonnelOfficer.Model
         public Position CurrentPosition { get; set; }
         public ObservableCollection<Position> Positions { get; set; } = new ObservableCollection<Position>();
 
-        public void FillEmployees()
+        public List<Position> PositionsAtDepartment => Positions?.Where(x => x.DepartmentId == (EditedEmployee?.DepartmentId ?? -1))?.ToList();
+
+        public void FillEmployees(bool reload = false)
         {
             Employees.Clear();
-            mainPresenter.GetEmployees().ForEach(Employees.Add);
+            mainPresenter.GetEmployees(reload).ForEach(Employees.Add);
             CurrentEmployee = Employees.FirstOrDefault();
         }
 
-        public void FillDepartments()
+        public void FillDepartments(bool reload = false)
         {
             Departments.Clear();
-            mainPresenter.GetDepartments().ForEach(Departments.Add);
+            mainPresenter.GetDepartments(reload).ForEach(Departments.Add);
             CurrentDepartment = Departments.FirstOrDefault();
             OnPropertyChanged("Departments");
         }
 
-        public void FillPositions()
+        public void FillPositions(bool reload = false)
         {
             Positions.Clear();
-            mainPresenter.GetPositions().ForEach(Positions.Add);
+            mainPresenter.GetPositions(reload).ForEach(Positions.Add);
             CurrentPosition = Positions.FirstOrDefault();
             OnPropertyChanged("Positions");
         }
+
+        public void Fill(string pagename)
+        {
+            if (!_isCancelEdit) return;
+
+            if (pagename.Contains("Employees"))
+            {
+                FillEmployees(true);
+            }            
+            else if (pagename.Contains("Departments"))
+            {
+                FillDepartments(true);
+            }
+            else if (pagename.Contains("Positions"))
+            {
+                FillPositions(true);
+            }
+        } 
 
         private bool _isCancelEdit = true;
         public bool IsCancelEdit
@@ -114,7 +125,7 @@ namespace PersonnelOfficer.Model
             {
                 EditedPosition = CurrentPosition.Clone() as Position;
                 EditedPosition.LastEditState = editState;
-                View.MainFrame.Navigate(UriEditPosition);
+                View.MainFrame.Navigate(UtilClass.UriEditPosition);
                 IsCancelEdit = false;
             }
         }
@@ -152,7 +163,7 @@ namespace PersonnelOfficer.Model
             {
                 EditedDepartment = CurrentDepartment.Clone() as Department;
                 EditedDepartment.LastEditState = editState;
-                View.MainFrame.Navigate(UriEditDepartment);
+                View.MainFrame.Navigate(UtilClass.UriEditDepartment);
                 IsCancelEdit = false;
             }
         }
@@ -189,7 +200,8 @@ namespace PersonnelOfficer.Model
             {
                 EditedEmployee = CurrentEmployee.Clone() as Employee;
                 EditedEmployee.LastEditState = editState;
-                View.MainFrame.Navigate(UriEditEmployee);
+                View.MainFrame.Navigate(UtilClass.UriEditEmployee);
+                OnPropertyChanged("PositionsAtDepartment");
                 IsCancelEdit = false;
             }
         }

@@ -14,7 +14,7 @@
       Loaded="Page_Loaded">
 
     <Page.Resources>
-        <data:SexEnumToCollectionConverter x:Key="SexEnumToCollectionConverter" />
+        <data:SexEnumToCollectionConverter x:Key="SexEnumToCollectionConverter" /> 
     </Page.Resources>
 
     <Grid>
@@ -45,15 +45,12 @@
             <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Дата рождения" Width="100"/>
-                <DatePicker MinWidth="380" 
-                            SelectedDateFormat="Short"  
-                            SelectedDate="{Binding EditedEmployee.DateOfBirth, StringFormat=\{0:dd.MM.yyyy\}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                            />
+                <DatePicker MinWidth="380" SelectedDateFormat="Short"  
+                            SelectedDate="{Binding EditedEmployee.DateOfBirth, StringFormat=\{0:dd.MM.yyyy\}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>            
             <StackPanel Orientation="Horizontal">
-                <Label Content="Пол" Width="100"/>
-                <!--<ComboBox MinWidth="90" ItemsSource="{Binding Source={StaticResource SexEnum}}"  SelectedItem="{Binding EditedEmployee.Sex}"/>-->
+                <Label Content="Пол" Width="100"/> 
                 <ComboBox x:Name="cbSexEnum" MinWidth="90" ItemsSource="{Binding Source={StaticResource SexEnum}, Converter={StaticResource SexEnumToCollectionConverter}}"  
                           SelectedValue="{Binding EditedEmployee.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           SelectedValuePath="Value"
@@ -102,18 +99,26 @@
                 <ComboBox Name="cbDepartment" MinWidth="380" ItemsSource="{Binding Departments}" 
                           SelectedValuePath="Id" DisplayMemberPath="Name"
                           SelectedValue="{Binding EditedEmployee.DepartmentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                          Loaded="ComboBox_Loaded">                    
+                          Loaded="ComboBox_Loaded"
+                          SelectionChanged="cbDepartment_SelectionChanged" 
+                          >                    
                 </ComboBox>
             </StackPanel>
             <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Должность" Width="100"/>
-                <ComboBox Name="cbPosition" MinWidth="380" ItemsSource="{Binding Positions}" 
+                <!--<ComboBox Name="cbPosition" MinWidth="380" 
+                          ItemsSource="{Binding Positions}" 
                           SelectedValuePath="Id" DisplayMemberPath="Name"
-                          SelectedValue="{Binding EditedEmployee.PositionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          Loaded="ComboBox_Loaded">
+                          SelectedValue="{Binding EditedEmployee.PositionId, Mode=TwoWay}"
+                          Loaded="ComboBox_Loaded"> 
+                </ComboBox>-->
+                <ComboBox Name="cbPosition" SelectedValuePath="Id" DisplayMemberPath="Name"  MinWidth="380"  
+                          ItemsSource="{Binding PositionsAtDepartment}"
+                          SelectedValue="{Binding EditedEmployee.PositionId, Mode=TwoWay}"
+                          Loaded="ComboBox_Loaded"> 
                 </ComboBox>
-            </StackPanel> 
+            </StackPanel>            
             <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Вн.телефон" Width="100"/>

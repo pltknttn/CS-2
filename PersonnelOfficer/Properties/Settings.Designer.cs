@@ -31,5 +31,14 @@ namespace PersonnelOfficer.Properties {
                 return ((string)(this["DbFileName"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WAREHOUS")]
+        public string MsSqlDdName {
+            get {
+                return ((string)(this["MsSqlDdName"]));
+            }
+        }
     }
 }
