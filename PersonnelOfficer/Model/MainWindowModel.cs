@@ -27,11 +27,14 @@ namespace PersonnelOfficer.Model
         }
         
         public MainWindow View { get; set; }
-        public Employee CurrentEmployee { get; set; }
+        private Employee _currentEmployee;
+        public Employee CurrentEmployee { get { return _currentEmployee; } set { _currentEmployee = value; OnPropertyChanged("CurrentEmployee"); } }
         public ObservableCollection<Employee> Employees { get; set; } = new ObservableCollection<Employee>();
-        public Department CurrentDepartment { get; set; }
+        private Department _currentDepartment;
+        public Department CurrentDepartment { get { return _currentDepartment; } set { _currentDepartment = value; OnPropertyChanged("CurrentDepartment"); } }  
         public ObservableCollection<Department> Departments { get; set; } = new ObservableCollection<Department>();
-        public Position CurrentPosition { get; set; }
+        private Position _currentPosition;
+        public Position CurrentPosition { get { return _currentPosition; } set { _currentPosition = value; OnPropertyChanged("CurrentPosition"); } } 
         public ObservableCollection<Position> Positions { get; set; } = new ObservableCollection<Position>();
         
         public Uri CurrentSource { get; set; } = UtilClass.UriEmployees;
@@ -51,25 +54,32 @@ namespace PersonnelOfficer.Model
 
         public void FillEmployees(bool reload = false)
         {
+            int id = CurrentEmployee?.Id ?? 0;
             Employees.Clear();
             mainPresenter.GetEmployees(reload).ForEach(Employees.Add);
-            CurrentEmployee = Employees.FirstOrDefault();
+            CurrentEmployee = Employees.FirstOrDefault(x=>x.Id == id) ?? Employees.FirstOrDefault();
+            OnPropertyChanged("Employees");
+            OnPropertyChanged("CurrentEmployee");
         }
 
         public void FillDepartments(bool reload = false)
         {
+            int id = CurrentDepartment?.Id ?? 0;
             Departments.Clear();
             mainPresenter.GetDepartments(reload).ForEach(Departments.Add);
-            CurrentDepartment = Departments.FirstOrDefault();
+            CurrentDepartment = Departments.FirstOrDefault(x => x.Id == id) ?? Departments.FirstOrDefault();
             OnPropertyChanged("Departments");
+            OnPropertyChanged("CurrentDepartment");
         }
 
         public void FillPositions(bool reload = false)
         {
+            int id = CurrentPosition?.Id ?? 0;
             Positions.Clear();
             mainPresenter.GetPositions(reload).ForEach(Positions.Add);
-            CurrentPosition = Positions.FirstOrDefault();
+            CurrentPosition = Positions.FirstOrDefault(x => x.Id == id);
             OnPropertyChanged("Positions");
+            OnPropertyChanged("CurrentPosition");
         }
 
         public void Fill()
@@ -115,7 +125,7 @@ namespace PersonnelOfficer.Model
             Positions.Add(mainPresenter.GetPositions().Last());
             View.MainFrame.GoBack();
             OnPropertyChanged("Positions");
-            CurrentPosition = Positions.Last();
+            CurrentPosition = Positions.FirstOrDefault(x=>x.Id == EditedPosition.Id) ?? Positions.Last();
             OnPropertyChanged("CurrentPosition");
             if(changeEmployees) FillEmployees();
             IsCancelEdit = true;
@@ -154,7 +164,7 @@ namespace PersonnelOfficer.Model
             Departments.Add(mainPresenter.GetDepartments().Last());
             View.MainFrame.GoBack();
             OnPropertyChanged("Departments");
-            CurrentDepartment = Departments.Last();
+            CurrentDepartment = Departments.FirstOrDefault(x => x.Id == EditedDepartment.Id) ?? Departments.Last(); 
             OnPropertyChanged("CurrentDepartment");
             IsCancelEdit = true;
         }
@@ -191,7 +201,7 @@ namespace PersonnelOfficer.Model
             if(!mainPresenter.SaveEmployee(EditedEmployee)) return;
             Employees.Add(mainPresenter.GetEmployees().Last());
             OnPropertyChanged("Employees");
-            CurrentEmployee = Employees.Last();
+            CurrentEmployee = Employees.FirstOrDefault(x => x.Id == EditedEmployee.Id) ?? Employees.Last(); 
             OnPropertyChanged("CurrentEmployee");
             View.MainFrame.GoBack();
             IsCancelEdit = true;
