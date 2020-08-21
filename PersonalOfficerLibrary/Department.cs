@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonnelOfficer.Data
+namespace PersonalOfficerLibrary
 {
     public class Department:ICloneable
     {

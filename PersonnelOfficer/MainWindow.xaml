@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <ToolBarPanel Grid.Row="0" Orientation="Horizontal" Margin="0,2,2,2" Background="#FFDBEAF0" >
             <Separator HorizontalAlignment="Left" Style="{StaticResource SeparatorStyle}"/>
-            <TextBlock x:Name="TextInfo" Text="Сотрудники" 
+            <TextBlock x:Name="TextInfo" Text="{Binding CurrentPage.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                        HorizontalAlignment="Center" VerticalAlignment="Center" 
                        FontSize="14" FontWeight="Bold" Foreground="DarkBlue"
                        MinWidth="100"/>
@@ -88,9 +88,9 @@
             </Expander>
         </ToolBarPanel>
         <Frame x:Name="MainFrame"  Grid.Row="1"  
-               Content="Frame" Margin="5"
-               Source="Views\PageEmployees.xaml"
-               Navigated="MainFrame_Navigated"  
-               NavigationUIVisibility="Hidden" />
+               Content="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"
+               Source="{Binding CurrentSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+               NavigationUIVisibility="Hidden" 
+               />
     </Grid>
 </Window>

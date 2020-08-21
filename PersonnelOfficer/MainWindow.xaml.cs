@@ -1,4 +1,5 @@
-﻿using PersonnelOfficer.Data;
+﻿using PersonalOfficerLibrary;
+using PersonnelOfficer.Data;
 using PersonnelOfficer.Model;
 using System;
 using System.Collections.Generic;
@@ -48,56 +49,24 @@ namespace PersonnelOfficer
                     break;
                 case "Positions":
                     MainFrame.Navigate(UtilClass.UriPositions);
-                    break; 
-                case "Add" when CurrentUri.OriginalString.Contains(UtilClass.UriEmployees.Segments.Last()):
-                    Model.EditEmployee(Data.EditState.Insert);
+                    break;  
+                case "Add":
+                    Model.Edit(EditState.Insert);
                     break;
-                case "Edit" when CurrentUri.OriginalString.Contains(UtilClass.UriEmployees.Segments.Last()):
-                    Model.EditEmployee(Data.EditState.Edit);
+                case "Edit":
+                    Model.Edit(EditState.Edit);
                     break;
-                case "Delete" when CurrentUri.OriginalString.Contains(UtilClass.UriEmployees.Segments.Last()):
-                    Model.EditEmployee(Data.EditState.Delete);
+                case "Delete":
+                    Model.Edit(EditState.Delete);
                     break;
-                case "Add" when CurrentUri.OriginalString.Contains(UtilClass.UriDepartments.Segments.Last()):
-                    Model.EditDepartment(Data.EditState.Insert);
-                    break;
-                case "Edit" when CurrentUri.OriginalString.Contains(UtilClass.UriDepartments.Segments.Last()):
-                    Model.EditDepartment(Data.EditState.Edit);
-                    break;
-                case "Delete" when CurrentUri.OriginalString.Contains(UtilClass.UriDepartments.Segments.Last()):
-                    Model.EditDepartment(Data.EditState.Delete);
-                    break;
-                case "Add" when CurrentUri.OriginalString.Contains(UtilClass.UriPositions.Segments.Last()):
-                    Model.EditPosition(Data.EditState.Insert);
-                    break;
-                case "Edit" when CurrentUri.OriginalString.Contains(UtilClass.UriPositions.Segments.Last()):
-                    Model.EditPosition(Data.EditState.Edit);
-                    break;
-                case "Delete" when CurrentUri.OriginalString.Contains(UtilClass.UriPositions.Segments.Last()):
-                    Model.EditPosition(Data.EditState.Delete);
-                    break;
-                case "Update":
-                    Model.Fill(CurrentPageName);
+                case "Update": 
+                    Model.Fill();
                     break;
                 default:
                     break;
             }
-        }
-
-        private Page CurrentPage;
-        private Uri CurrentUri;
-        private string CurrentPageName = string.Empty;
-       
-        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-           CurrentPageName = e.Content.GetType().Name ?? string.Empty; 
-           CurrentUri  = e.Uri;
-           CurrentPage = e.Content as Page;
-           
-           TextInfo.Text = CurrentPage?.Title;
-           TextInfo.Tag = CurrentPageName;
-        }
-
+        }         
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Model.Init();

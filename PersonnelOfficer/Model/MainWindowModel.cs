@@ -1,4 +1,5 @@
-﻿using PersonnelOfficer.Data;
+﻿using PersonalOfficerLibrary;
+using PersonnelOfficer.Data;
 using PersonnelOfficer.Presenter;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PersonnelOfficer.Model
 {
@@ -31,6 +33,19 @@ namespace PersonnelOfficer.Model
         public ObservableCollection<Department> Departments { get; set; } = new ObservableCollection<Department>();
         public Position CurrentPosition { get; set; }
         public ObservableCollection<Position> Positions { get; set; } = new ObservableCollection<Position>();
+        
+        public Uri CurrentSource { get; set; } = UtilClass.UriEmployees;
+        private Page _currentPage = new Page();
+        public Page CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged("CurrentPage");
+                OnPropertyChanged("CurrentPage.Title");
+            }
+        }
 
         public List<Position> PositionsAtDepartment => Positions?.Where(x => x.DepartmentId == (EditedEmployee?.DepartmentId ?? -1))?.ToList();
 
@@ -57,8 +72,9 @@ namespace PersonnelOfficer.Model
             OnPropertyChanged("Positions");
         }
 
-        public void Fill(string pagename)
+        public void Fill()
         {
+            string pagename = CurrentPage.GetType().Name;
             if (!_isCancelEdit) return;
 
             if (pagename.Contains("Employees"))
@@ -204,6 +220,21 @@ namespace PersonnelOfficer.Model
                 OnPropertyChanged("PositionsAtDepartment");
                 IsCancelEdit = false;
             }
+        }
+
+        public void Edit(EditState editState)
+        {
+            if (editState == EditState.Delete)
+            {
+                if (!mainPresenter.ShowMessageQuestions("Вы уверены ?", $"{CurrentPage.Title}. Удаление"))
+                    return;
+            }
+            if (CurrentSource.OriginalString.Contains(UtilClass.UriPositions.Segments.Last()))
+                EditPosition(editState);
+            else if (CurrentSource.OriginalString.Contains(UtilClass.UriDepartments.Segments.Last()))
+                EditDepartment(editState);
+            else if (CurrentSource.OriginalString.Contains(UtilClass.UriEmployees.Segments.Last()))
+                EditEmployee(editState);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PersonnelOfficer.Data;
+﻿using PersonalOfficerLibrary;
+using PersonnelOfficer.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,8 +13,7 @@ namespace PersonnelOfficer.Presenter
 {
     public class MainPresenter
     {
-        private static readonly string dbName = Properties.Settings.Default.MsSqlDdName;
-        private static string connectionString;
+        private static PersonnelOfficerServiceRef.WCFServiceClient serviceClient = null;
         private static Window Owner;
         private static MainPresenter _mainPresenter;
         public static MainPresenter Instance
@@ -29,7 +29,14 @@ namespace PersonnelOfficer.Presenter
         private MainPresenter()
         {
             Owner = Application.Current.MainWindow;
-            connectionString = ConfigurationManager.ConnectionStrings[dbName].ConnectionString; 
+            try
+            {
+                serviceClient = new PersonnelOfficerServiceRef.WCFServiceClient();
+            }
+            catch(Exception ex)
+            {
+                ShowMessageError(ex?.InnerException.Message ?? ex.Message, "Подключение сервиса...");
+            }
         } 
           
         private List<Employee> _employees;
@@ -37,66 +44,16 @@ namespace PersonnelOfficer.Presenter
         {
             if (_employees == null || reload)
             {
-                if (_employees == null) _employees = new List<Employee>();
-                else _employees.Clear(); 
-               
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                try
                 {
-
-                    try
-                    {
-                        connection.Open();
-
-                        using (SqlCommand command = new SqlCommand(@"Org.p_GetEmployee", connection))
-                        {
-                            command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                            using (SqlDataReader reader = command.ExecuteReader())
-                            {
-                                if (reader.HasRows) // если есть данные
-                                {
-                                    while (reader.Read()) // построчно считываем данные
-                                    {
-                                        _employees.Add(new Employee()
-                                        {
-                                            Id = reader.GetInt32(0),
-                                            FirstName = reader.GetValue(1)?.ToString(),
-                                            Patronymic = reader.GetValue(2)?.ToString(),
-                                            Surname = reader.GetValue(3)?.ToString(),
-                                            Title = reader.GetValue(4)?.ToString(),
-                                            DateOfBirth = reader.GetDateTime(5),
-                                            Sex = (Sex)reader.GetString(6)[0],
-                                            Married = reader.GetValue(7)?.ToString()=="1",
-                                            Telephone = reader.GetValue(8)?.ToString(),
-                                            Mobilephone = reader.GetValue(9)?.ToString(),
-                                            Address = reader.GetValue(10)?.ToString(),
-                                            Email = reader.GetValue(11)?.ToString(),
-                                            PositionId = reader.GetInt32(12),
-                                            DepartmentId = reader.GetInt32(13),
-                                            Salary = double.Parse(reader.GetValue(14).ToString()),
-                                            LastEditState = string.IsNullOrEmpty(reader.GetValue(15)?.ToString()) || !(reader.GetValue(15) is int) ? EditState.Insert : (EditState)reader.GetInt32(15),
-                                        });
-                                    }
-                                }
-                                reader.Close();
-                            }
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        ShowMessageError(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowMessageError(ex.Message);
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
+                    _employees = serviceClient?.GetEmployees()?.ToList();
+                }
+                catch (Exception ex)
+                {
+                    ShowMessageError(ex?.InnerException.Message ?? ex.Message);
                 }
             }
-            return _employees;
+            return _employees ?? new List<Employee>();
         }
 
         private List<Department> _departments;
@@ -104,54 +61,16 @@ namespace PersonnelOfficer.Presenter
         {
             if (_departments == null || reload)
             {
-                if (_departments == null) _departments = new List<Department>();
-                else _departments.Clear();
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                try
                 {
-                    try
-                    {
-                        connection.Open();
-                        using (SqlCommand command = new SqlCommand(@"Org.p_GetDepartment", connection))
-                        {
-                            command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                            using (SqlDataReader reader = command.ExecuteReader())
-                            {
-                                if (reader.HasRows) // если есть данные
-                                {
-                                    while (reader.Read()) // построчно считываем данные
-                                    {
-                                        _departments.Add(new Department()
-                                        {
-                                            Id = reader.GetInt32(0),
-                                            Name = reader.GetString(1),
-                                            Telephone = reader.GetValue(2)?.ToString(),
-                                            Address = reader.GetValue(3)?.ToString(),
-                                            RommNumber = reader.GetValue(4)?.ToString(),
-                                            LastEditState = string.IsNullOrEmpty(reader.GetValue(5)?.ToString()) || !(reader.GetValue(5) is int) ? EditState.Insert : (EditState)reader.GetInt32(5),
-                                        });
-                                    }
-                                }
-                                reader.Close();
-                            }
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        ShowMessageError(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowMessageError(ex.Message);
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
+                    _departments = serviceClient?.GetDepartments()?.ToList();
+                }
+                catch (Exception ex)
+                {
+                    ShowMessageError(ex?.InnerException.Message ?? ex.Message);
                 }
             }
-            return _departments;
+            return _departments ?? new List<Department>();
         }
 
         private List<Position> _positions;
@@ -159,55 +78,16 @@ namespace PersonnelOfficer.Presenter
         {
             if (_positions == null || reload)
             {
-                if (_positions == null) _positions = new List<Position>();
-                else _positions.Clear();
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                try
                 {
-                    try
-                    {
-                        connection.Open();
-
-                        using (SqlCommand command = new SqlCommand(@"Org.p_GetPosition", connection))
-                        {
-                            command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                            using (SqlDataReader reader = command.ExecuteReader())
-                            {
-                                if (reader.HasRows) // если есть данные
-                                {
-                                    while (reader.Read()) // построчно считываем данные
-                                    {
-                                        _positions.Add(new Position()
-                                        {
-                                            Id = reader.GetInt32(0),
-                                            Name = reader.GetString(1),
-                                            SalaryFrom = double.Parse(reader.GetValue(2).ToString()),
-                                            SalaryTo = double.Parse(reader.GetValue(3).ToString()),
-                                            DepartmentId = reader.GetInt32(4),
-                                            LastEditState = string.IsNullOrEmpty(reader.GetValue(5)?.ToString()) || !(reader.GetValue(5) is int) ? EditState.Insert : (EditState)reader.GetInt32(5),
-                                        });
-                                    }
-                                }
-                                reader.Close();
-                            }
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        ShowMessageError(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowMessageError(ex.Message);
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
+                    _positions = serviceClient?.GetPositions()?.ToList();
                 }
-            }
-            return _positions;
+                catch (Exception ex)
+                {
+                    ShowMessageError(ex?.InnerException.Message ?? ex.Message);
+                }
+        }
+            return _positions ?? new List<Position>();
         }
 
         public bool SaveEmployee(Employee employee)
@@ -251,64 +131,25 @@ namespace PersonnelOfficer.Presenter
             if (string.IsNullOrWhiteSpace(employee.Title?.Trim()))
                 employee.Title = $"{employee.FirstName} {employee.Patronymic}".Trim();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                var employeeId = 0;
+                var res = serviceClient?.SaveEmployee(employee, out employeeId);
+                if (res == true)
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(@"Org.p_SaveEmployee", connection))
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.Add(new SqlParameter("@Id", System.Data.SqlDbType.Int) { Value = employee.Id });
-                        command.Parameters.Add(new SqlParameter("@FirstName", employee.FirstName));
-                        command.Parameters.Add(new SqlParameter("@Patronymic", employee.Patronymic ?? ""));
-                        command.Parameters.Add(new SqlParameter("@Surname", employee.Surname));
-                        command.Parameters.Add(new SqlParameter("@Title", employee.Title));
-                        command.Parameters.Add(new SqlParameter("@DateOfBirth", System.Data.SqlDbType.DateTime2) { Value = employee.DateOfBirth });
-                        command.Parameters.Add(new SqlParameter("@Sex", System.Data.SqlDbType.Char) { Value = (char)employee.Sex });
-                        command.Parameters.Add(new SqlParameter("@Married", System.Data.SqlDbType.Bit) { Value = employee.Married });
-                        command.Parameters.Add(new SqlParameter("@Telephone", employee.Telephone ?? ""));
-                        command.Parameters.Add(new SqlParameter("@Mobilephone", employee.Mobilephone ?? ""));
-                        command.Parameters.Add(new SqlParameter("@Address", employee.Address??""));
-                        command.Parameters.Add(new SqlParameter("@Email", employee.Email ?? ""));
-                        command.Parameters.Add(new SqlParameter("@PositionId", System.Data.SqlDbType.Int) { Value = employee.PositionId });
-                        command.Parameters.Add(new SqlParameter("@DepartmentId", System.Data.SqlDbType.Int) { Value = employee.DepartmentId });
-                        command.Parameters.Add(new SqlParameter("@Salary", System.Data.SqlDbType.Decimal) { Value = employee.Salary });
-                        command.Parameters.Add(new SqlParameter("@LastEditState", employee.LastEditState.ToString()));
+                    employee.Id = employeeId;
 
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                if (reader.Read())
-                                {
-                                    employee.Id = reader.GetInt32(0);
-                                }
-                            }
-                            reader.Close();
-                        }
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                finally
-                {
-                    connection.Close(); 
-                }
-            } 
+                    _employees.RemoveAll(x => x.Id == employee.Id);
+                    _employees.Add(employee);
 
-            _employees.RemoveAll(x => x.Id == employee.Id);
-            _employees.Add(employee);
-
-            return true;
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessageError(ex?.InnerException.Message ?? ex.Message);
+            }
+            return false;
         }
 
         public bool DeleteEmployee(Employee employee)
@@ -319,37 +160,21 @@ namespace PersonnelOfficer.Presenter
                 return false;
             }
             if (_employees != null && !_employees.Exists(x => x.Id == employee.Id)) return true;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                if (serviceClient?.DeleteEmployee(employee) == true)
                 {
-                    connection.Open();
+                    _employees.RemoveAll(x => x.Id == employee.Id);
 
-                    using (SqlCommand command = new SqlCommand(@"Org.p_DeleteEmployee @Id", connection))
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure; 
-                        command.Parameters.Add(new SqlParameter("@Id", System.Data.SqlDbType.Int) { Value = employee.Id }); 
-                        command.ExecuteNonQuery(); 
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                finally
-                {
-                    connection.Close();
+                    ShowMessageInfo("Операция выполнена, сотрудник удален");
+                    return true;
                 }
             }
-            _employees.RemoveAll(x => x.Id == employee.Id);
-            return true;
+            catch(Exception ex)
+            {
+                ShowMessageError(ex?.InnerException.Message ?? ex.Message);
+            }
+            return false;
         }
          
         public bool SaveDepartment(Department department)
@@ -365,55 +190,25 @@ namespace PersonnelOfficer.Presenter
                 return false;
             }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                var Id = 0;
+                var res = serviceClient?.SaveDepartment(department, out Id);
+                if (res == true)
                 {
-                    connection.Open();
+                    department.Id = Id;
 
-                    using (SqlCommand command = new SqlCommand(@"exec Org.p_SaveDepartment @Id, @Name, @Telephone, @Address, @RommNumber, @LastEditState", connection))
-                    {
-                        command.CommandType = System.Data.CommandType.Text;
-                        command.Parameters.Add(new SqlParameter("@Id", System.Data.SqlDbType.Int) { Value = department.Id });
-                        command.Parameters.Add(new SqlParameter("@Name", department.Name));  
-                        command.Parameters.Add(new SqlParameter("@Telephone", department.Telephone??""));
-                        command.Parameters.Add(new SqlParameter("@RommNumber", department.RommNumber??""));
-                        command.Parameters.Add(new SqlParameter("@Address", department.Address??""));  
-                        command.Parameters.Add(new SqlParameter("@LastEditState", department.LastEditState.ToString()));
+                    _departments.RemoveAll(x => x.Id == department.Id);
+                    _departments.Add(department);
 
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                if (reader.Read())
-                                {
-                                    department.Id = reader.GetInt32(0);
-                                }
-                            }
-                            reader.Close();
-                        }
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                finally
-                {
-                    connection.Close();
+                    return true;
                 }
             }
-
-            _departments.RemoveAll(x => x.Id == department.Id);
-            _departments.Add(department);
-
-            return true;
+            catch (Exception ex)
+            {
+                ShowMessageError(ex?.InnerException.Message ?? ex.Message);
+            }
+            return false; 
         }
 
         public bool DeleteDepartment(Department department, out bool changePositions)
@@ -433,41 +228,25 @@ namespace PersonnelOfficer.Presenter
                 return false;
             }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                if (serviceClient?.DeleteDepartment(department) == true)
                 {
-                    connection.Open();
+                    changePositions = _positions?.Any(x => x.DepartmentId == department.Id) == true;
 
-                    using (SqlCommand command = new SqlCommand(@"Org.p_DeleteDepartment", connection))
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.Add(new SqlParameter("@Id", System.Data.SqlDbType.Int) { Value = department.Id });
-                        command.ExecuteNonQuery();
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                finally
-                {
-                    connection.Close();
+                    _departments.RemoveAll(x => x.Id == department.Id);
+                    _positions?.RemoveAll(x => x.DepartmentId == department.Id);
+
+                    ShowMessageInfo("Операция выполнена, отдел удален");
+
+                    return true;
                 }
             }
-            
-             changePositions = _positions?.Any(x => x.DepartmentId == department.Id) == true;
-            
-            _departments.RemoveAll(x => x.Id == department.Id);
-            _positions?.RemoveAll(x => x.DepartmentId == department.Id);
-
-            return true;
+            catch (Exception ex)
+            {
+                ShowMessageError(ex?.InnerException.Message ?? ex.Message);
+            }
+            return false; 
         }
          
         public bool SavePosition(Position position, out bool changeEmployees)
@@ -500,59 +279,30 @@ namespace PersonnelOfficer.Presenter
                 return false;
             }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                var Id = 0;
+                var res = serviceClient?.SavePosition(position, out Id);
+                if (res == true)
                 {
-                    connection.Open();
+                    position.Id = Id;
 
-                    using (SqlCommand command = new SqlCommand(@"Org.p_SavePosition", connection))
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.Add(new SqlParameter("@Id", System.Data.SqlDbType.Int) { Value = position.Id });
-                        command.Parameters.Add(new SqlParameter("@Name", position.Name));
-                        command.Parameters.Add(new SqlParameter("@SalaryFrom", System.Data.SqlDbType.Decimal) { Value = position.SalaryFrom });
-                        command.Parameters.Add(new SqlParameter("@SalaryTo", System.Data.SqlDbType.Decimal) { Value = position.SalaryTo });
-                        command.Parameters.Add(new SqlParameter("@DepartmentId", System.Data.SqlDbType.Int) { Value = position.DepartmentId }); 
-                        command.Parameters.Add(new SqlParameter("@LastEditState", position.LastEditState.ToString()));
+                    _positions.RemoveAll(x => x.Id == position.Id);
+                    _positions.Add(position);
 
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                if (reader.Read())
-                                {
-                                    position.Id = reader.GetInt32(0);
-                                }
-                            }
-                            reader.Close();
-                        }
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                finally
-                {
-                    connection.Close();
+                    changeEmployees = _employees?.Any(x => x.PositionId == position.Id && x.DepartmentId != position.DepartmentId) == true;
+                    _employees?
+                        .FindAll(x => x.PositionId == position.Id && x.DepartmentId != position.DepartmentId)?
+                        .ForEach(x => x.DepartmentId = position.DepartmentId);
+
+                    return true;
                 }
             }
-
-            _positions.RemoveAll(x => x.Id == position.Id);
-            _positions.Add(position);
-
-            changeEmployees = _employees?.Any(x => x.PositionId == position.Id && x.DepartmentId != position.DepartmentId) == true;
-            _employees?
-                .FindAll(x => x.PositionId == position.Id && x.DepartmentId != position.DepartmentId)?
-                .ForEach(x => x.DepartmentId = position.DepartmentId); 
-            return true;
+            catch (Exception ex)
+            {
+                ShowMessageError(ex?.InnerException.Message ?? ex.Message);
+            }
+            return false; 
         }
 
         public bool DeletePosition(Position position)
@@ -570,38 +320,22 @@ namespace PersonnelOfficer.Presenter
                 return false;
             }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                if (serviceClient?.DeletePosition(position) == true)
                 {
-                    connection.Open();
+                    _positions?.RemoveAll(x => x.Id == position.Id);
 
-                    using (SqlCommand command = new SqlCommand(@"Org.p_DeletePosition", connection))
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.Add(new SqlParameter("@Id", System.Data.SqlDbType.Int) { Value = position.Id });
-                        command.ExecuteNonQuery();
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    ShowMessageError(ex.Message);
-                    return false;
-                }
-                finally
-                {
-                    connection.Close();
+                    ShowMessageInfo("Операция выполнена, должность удалена");
+                    return true;
                 }
             }
+            catch (Exception ex)
+            {
+                ShowMessageError(ex?.InnerException.Message ?? ex.Message);
+            }  
 
-            _positions?.RemoveAll(x => x.Id == position.Id); 
-
-            return true;
+            return false;
         }
                 
         public void ShowMessageWarn(string message, string caption = "Внимание!")
@@ -622,6 +356,17 @@ namespace PersonnelOfficer.Presenter
         public bool ShowMessageQuestions(string message, string caption = "Ошибка!")
         {
             return MessageBox.Show(Owner, message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
-        } 
+        }
+
+        ~MainPresenter()
+        {
+            try
+            {
+                if (serviceClient?.State != System.ServiceModel.CommunicationState.Closed)
+                    serviceClient?.Close();
+            }
+            catch { }
+            serviceClient = null;
+        }
     }
 }

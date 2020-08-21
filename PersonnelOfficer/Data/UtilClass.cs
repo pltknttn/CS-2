@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PersonalOfficerLibrary;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -163,21 +164,6 @@ namespace PersonnelOfficer.Data
         }
 
 
-    }
-
-    public enum Sex
-    {
-        [Description("М")]
-        Man = 'М',
-        [Description("Ж")]
-        Female = 'Ж'
-    }
-
-    public enum EditState
-    {
-        Insert,
-        Edit,
-        Delete
     }
 
     public class SexEnumToCollectionConverter : MarkupExtension, IValueConverter

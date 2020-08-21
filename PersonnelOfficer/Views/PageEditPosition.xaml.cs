@@ -1,4 +1,5 @@
-﻿using PersonnelOfficer.Model;
+﻿using PersonalOfficerLibrary;
+using PersonnelOfficer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace PersonnelOfficer.Views
         {
             InitializeComponent();
             this.DataContext = Application.Current.MainWindow.DataContext;
-            if (CurrentModel?.EditedPosition?.LastEditState == Data.EditState.Insert)
+            if (CurrentModel?.EditedPosition?.LastEditState == EditState.Insert)
                 this.Title = $"Должности.Добавление";
         }
 

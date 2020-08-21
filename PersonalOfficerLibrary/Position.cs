@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonnelOfficer.Data
+namespace PersonalOfficerLibrary
 {
-    public sealed class Position: ICloneable
+    public sealed class Position : ICloneable
     {
         public int Id { get; set; }
         /// <summary>Должность</summary>

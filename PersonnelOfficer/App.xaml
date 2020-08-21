@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PersonnelOfficer" 
              xmlns:control="clr-namespace:PersonnelOfficer.Control"
-             xmlns:data="clr-namespace:PersonnelOfficer.Data"
+             xmlns:data="clr-namespace:PersonalOfficerLibrary;assembly=PersonalOfficerLibrary"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
