@@ -204,7 +204,6 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Resource Include="Images\updates.png" />
-    <Content Include="script.sql" />
     <Resource Include="Images\back_to.png" />
     <Resource Include="Images\menu.png" />
     <Resource Include="Images\next_page.png" />
